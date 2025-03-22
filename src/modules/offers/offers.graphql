@@ -1,0 +1,52 @@
+type Offer {
+  id: ID!
+  title: String!
+  subtitle: String
+  discount: Float!
+  appLink: String
+  products: [String]
+  categoryId: String!
+  image: String
+  imageUrl: String
+  isActive: Boolean!
+  creationDate: String!
+  updateDate: String!
+  expirationDate: String!
+}
+
+input CreateOfferInput {
+  title: String!
+  subtitle: String
+  discount: Float!
+  appLink: String
+  products: [String]
+  categoryId: String!
+  image: String
+  imageUrl: String
+  isActive: Boolean
+  expirationDate: String!
+}
+
+input UpdateOfferInput {
+  title: String
+  subtitle: String
+  discount: Float
+  appLink: String
+  products: [String]
+  categoryId: String
+  image: String
+  imageUrl: String
+  isActive: Boolean
+  expirationDate: String
+}
+
+type Query {
+  getOffers: [Offer]
+  getOfferById(id: ID!): Offer
+}
+
+type Mutation {
+  createOffer(input: CreateOfferInput!): Offer
+  updateOffer(id: ID!, input: UpdateOfferInput!): Offer
+  deleteOffer(id: ID!): Offer
+}

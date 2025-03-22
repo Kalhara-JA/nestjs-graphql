@@ -1,0 +1,58 @@
+type User {
+  id: ID!
+  uid: String
+  firstName: String!
+  lastName: String!
+  email: String!
+  firebaseId: String!
+  phoneNumber: String!
+  profilePicture: String
+  fcmToken: String
+}
+
+input CreateUserInput {
+  uid: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  firebaseId: String!
+  phoneNumber: String!
+  profilePicture: String
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  profilePicture: String
+}
+
+type Address {
+  id: ID!
+  name: String!
+  address: String!
+  userId: ID!
+  latitude: String
+  longitude: String
+  additional: String
+}
+
+type LegalData {
+  id: ID!
+  userId: ID!
+  personType: String!
+  documentType: String!
+  documentNumber: String!
+}
+
+type Query {
+  getUserByFirebaseId(firebaseId: String!): User
+  getUserById(id: ID!): User
+  getUsers: [User]
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(id: ID!, input: UpdateUserInput!): User
+}

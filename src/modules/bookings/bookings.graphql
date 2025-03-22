@@ -1,0 +1,51 @@
+type Booking {
+  id: ID!
+  userId: String!
+  providerId: String!
+  productId: String!
+  date: String!
+  time: String!
+  address: String!
+  bookingNumber: String
+  status: String!
+  hours: String
+  type: String
+  newPrice: String
+  securityCode: String
+  notes: String
+}
+
+input CreateBookingInput {
+  userId: String!
+  providerId: String!
+  productId: String!
+  date: String!
+  time: String!
+  address: String!
+  hours: String
+  type: String
+}
+
+input UpdateBookingStatusInput {
+  status: String!
+  notes: String
+}
+
+input UpdateBookingTypeInput {
+  type: String!
+  newPrice: String!
+}
+
+type Query {
+  getBookingById(id: ID!): Booking
+  getBookingsByUser(userId: ID!): [Booking]
+  getBookingsByProvider(providerId: ID!): [Booking]
+  getAcceptedBookingsByProvider(providerId: ID!, date: String): [Booking]
+  getBookingDetail(bookingId: ID!): BookingDetail
+}
+
+type Mutation {
+  createBooking(input: CreateBookingInput!): Booking
+  updateBookingStatus(id: ID!, input: UpdateBookingStatusInput!): Booking
+  updateBookingType(id: ID!, input: UpdateBookingTypeInput!): Booking
+}

@@ -1,0 +1,39 @@
+type Provider {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  image: String!
+  firebaseId: String!
+  fcmToken: String
+  rating: Float
+}
+
+input CreateProviderInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  image: String!
+  firebaseId: String!
+}
+
+input UpdateProviderInput {
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  image: String
+}
+
+type Query {
+  getProviders: [Provider]
+  getProviderById(id: ID!): Provider
+}
+
+type Mutation {
+  createProvider(input: CreateProviderInput!): Provider
+  updateProvider(id: ID!, input: UpdateProviderInput!): Provider
+  deleteProvider(id: ID!): Provider
+}

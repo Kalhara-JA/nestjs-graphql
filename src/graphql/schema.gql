@@ -1,0 +1,356 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  uid: String
+  firstName: String!
+  lastName: String!
+  email: String!
+  firebaseId: String!
+  phoneNumber: String!
+  profilePicture: String
+  fcmToken: String
+}
+
+type Address {
+  id: ID!
+  name: String!
+  address: String!
+  userId: String!
+  latitude: String
+  longitude: String
+  additional: String
+}
+
+type LegalData {
+  id: ID!
+  userId: String!
+  personType: String!
+  documentType: String!
+  documentNumber: String!
+}
+
+type FavoriteProduct {
+  id: ID!
+  userId: String!
+  productId: String!
+}
+
+type Offer {
+  id: ID!
+  title: String!
+  subtitle: String
+  discount: Float!
+  appLink: String
+  products: [String!]
+  categoryId: String!
+  image: String
+  imageUrl: String
+  isActive: Boolean!
+  creationDate: String!
+  updateDate: String!
+  expirationDate: String!
+}
+
+type Review {
+  id: ID!
+  productId: String!
+  userId: String!
+  categoryId: String!
+  subCategoryId: String!
+  bookingId: String!
+  rating: Float!
+  comment: String!
+  date: String!
+}
+
+type ServiceCategory {
+  id: ID!
+  title: String!
+  image: String!
+  color: String!
+}
+
+type SubCategory {
+  id: ID!
+  title: String!
+  image: String!
+  color: String!
+  categoryId: String!
+}
+
+type Booking {
+  id: ID!
+  userId: String!
+  providerId: String!
+  productId: String!
+  date: String!
+  time: String!
+  address: String!
+  bookingNumber: String
+  status: String!
+  hours: String
+  type: String
+  newPrice: String
+  securityCode: String
+  notes: String
+}
+
+type Provider {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  image: String!
+  firebaseId: String!
+  fcmToken: String
+  rating: Float
+}
+
+type Product {
+  id: ID!
+  providerId: String!
+  title: String!
+  image: String!
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  discount: Int
+  mainCategory: String!
+  subCategory: String!
+  includeSupplies: Boolean!
+  includeTools: Boolean!
+}
+
+type ProductDetail {
+  id: ID!
+  provider: Provider!
+  title: String!
+  image: String!
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  discount: Int
+  mainCategory: ServiceCategory!
+  subCategory: SubCategory!
+  includeSupplies: Boolean!
+  includeTools: Boolean!
+}
+
+type BookingDetail {
+  booking: Booking!
+  user: User
+  address: Address
+  provider: Provider
+  product: ProductDetail
+}
+
+type Query {
+  getUserByFirebaseId(firebaseId: String!): User!
+  getUserById(id: ID!): User!
+  getUsers: [User!]!
+  getAddressesByUserId(userId: ID!): [Address!]!
+  getLegalDataByUserId(userId: ID!): LegalData!
+  getFavoriteProductsByUserId(userId: ID!): [FavoriteProduct!]!
+  getProducts: [Product!]!
+  getProductById(id: ID!): Product!
+  getProviders: [Provider!]!
+  getProviderById(id: ID!): Provider!
+  getBookingById(id: ID!): Booking!
+  getBookingsByUser(userId: ID!): [Booking!]!
+  getBookingsByProvider(providerId: ID!): [Booking!]!
+  getAcceptedBookingsByProvider(providerId: ID!, date: String): [Booking!]!
+  getBookingDetail(bookingId: ID!): BookingDetail!
+  getServiceCategories: [ServiceCategory!]!
+  getSubCategoriesByCategory(categoryId: ID!): [SubCategory!]!
+  getReviewById(id: ID!): Review!
+  getReviewsByProduct(productId: ID!): [Review!]!
+  getOffers: [Offer!]!
+  getOfferById(id: ID!): Offer!
+}
+
+type Mutation {
+  createUser(input: CreateUserDto!): User!
+  updateUser(id: ID!, input: UpdateUserDto!): User!
+  updateUserFCMToken(id: ID!, fcmToken: String!): User!
+  createAddress(name: String!, address: String!, userId: ID!, latitude: String, longitude: String, additional: String): Address!
+  createLegalData(userId: ID!, personType: String!, documentType: String!, documentNumber: String!): LegalData!
+  updateLegalData(id: ID!, personType: String, documentType: String, documentNumber: String): LegalData!
+  createProduct(input: CreateProductDto!): Product!
+  updateProduct(id: ID!, input: UpdateProductDto!): Product!
+  deleteProduct(id: ID!): Product!
+  createProvider(input: CreateProviderDto!): Provider!
+  updateProvider(id: ID!, input: UpdateProviderDto!): Provider!
+  deleteProvider(id: ID!): Provider!
+  createBooking(input: CreateBookingDto!): Booking!
+  updateBookingStatus(id: ID!, input: UpdateBookingStatusDto!): Booking!
+  updateBookingType(id: ID!, input: UpdateBookingTypeDto!): Booking!
+  createServiceCategory(input: CreateServiceCategoryDto!): ServiceCategory!
+  updateServiceCategory(id: ID!, input: UpdateServiceCategoryDto!): ServiceCategory!
+  deleteServiceCategory(id: ID!): ServiceCategory!
+  createSubCategory(input: CreateSubCategoryDto!): SubCategory!
+  updateSubCategory(id: ID!, input: UpdateSubCategoryDto!): SubCategory!
+  deleteSubCategory(id: ID!): SubCategory!
+  createReview(input: CreateReviewDto!): Review!
+  updateReview(id: ID!, input: UpdateReviewDto!): Review!
+  deleteReview(id: ID!): Review!
+  createOffer(input: CreateOfferDto!): Offer!
+  updateOffer(id: ID!, input: UpdateOfferDto!): Offer!
+  deleteOffer(id: ID!): Offer!
+}
+
+input CreateUserDto {
+  uid: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  firebaseId: String!
+  phoneNumber: String!
+  profilePicture: String
+}
+
+input UpdateUserDto {
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  profilePicture: String
+}
+
+input CreateProductDto {
+  providerId: String!
+  title: String!
+  image: String!
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  discount: Float
+  mainCategory: String!
+  subCategory: String!
+  includeSupplies: Boolean!
+  includeTools: Boolean!
+}
+
+input UpdateProductDto {
+  title: String
+  image: String
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  mainCategory: String
+  subCategory: String
+  includeSupplies: Boolean
+  includeTools: Boolean
+}
+
+input CreateProviderDto {
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  image: String!
+  firebaseId: String!
+}
+
+input UpdateProviderDto {
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  image: String
+}
+
+input CreateBookingDto {
+  userId: String!
+  providerId: String!
+  productId: String!
+  date: String!
+  time: String!
+  address: String!
+  hours: String
+  type: String
+}
+
+input UpdateBookingStatusDto {
+  status: String!
+  notes: String
+}
+
+input UpdateBookingTypeDto {
+  type: String!
+  newPrice: String!
+}
+
+input CreateServiceCategoryDto {
+  title: String!
+  image: String!
+  color: String!
+}
+
+input UpdateServiceCategoryDto {
+  title: String
+  image: String
+  color: String
+}
+
+input CreateSubCategoryDto {
+  title: String!
+  image: String!
+  color: String!
+  categoryId: String!
+}
+
+input UpdateSubCategoryDto {
+  title: String
+  image: String
+  color: String
+  categoryId: String
+}
+
+input CreateReviewDto {
+  productId: String!
+  userId: String!
+  categoryId: String!
+  subCategoryId: String!
+  bookingId: String!
+  rating: Float!
+  comment: String!
+}
+
+input UpdateReviewDto {
+  rating: Float
+  comment: String
+}
+
+input CreateOfferDto {
+  title: String!
+  subtitle: String
+  discount: Float!
+  appLink: String
+  products: [String!]
+  categoryId: String!
+  image: String
+  imageUrl: String
+  isActive: Boolean!
+  expirationDate: String!
+}
+
+input UpdateOfferDto {
+  title: String
+  subtitle: String
+  discount: Float
+  appLink: String
+  products: [String!]
+  categoryId: String
+  image: String
+  imageUrl: String
+  isActive: Boolean
+  expirationDate: String
+}

@@ -1,0 +1,58 @@
+type ServiceCategory {
+  id: ID!
+  title: String!
+  image: String!
+  color: String!
+}
+
+type SubCategory {
+  id: ID!
+  title: String!
+  image: String!
+  color: String!
+  categoryId: String!
+}
+
+input CreateServiceCategoryInput {
+  title: String!
+  image: String!
+  color: String!
+}
+
+input UpdateServiceCategoryInput {
+  title: String
+  image: String
+  color: String
+}
+
+input CreateSubCategoryInput {
+  title: String!
+  image: String!
+  color: String!
+  categoryId: String!
+}
+
+input UpdateSubCategoryInput {
+  title: String
+  image: String
+  color: String
+  categoryId: String
+}
+
+type Query {
+  getServiceCategories: [ServiceCategory]
+  getSubCategoriesByCategory(categoryId: ID!): [SubCategory]
+}
+
+type Mutation {
+  createServiceCategory(input: CreateServiceCategoryInput!): ServiceCategory
+  updateServiceCategory(
+    id: ID!
+    input: UpdateServiceCategoryInput!
+  ): ServiceCategory
+  deleteServiceCategory(id: ID!): ServiceCategory
+
+  createSubCategory(input: CreateSubCategoryInput!): SubCategory
+  updateSubCategory(id: ID!, input: UpdateSubCategoryInput!): SubCategory
+  deleteSubCategory(id: ID!): SubCategory
+}

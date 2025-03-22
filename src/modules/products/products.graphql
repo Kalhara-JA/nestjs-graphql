@@ -1,0 +1,53 @@
+type Product {
+  id: ID!
+  providerId: String!
+  title: String!
+  image: String!
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  discount: Int
+  mainCategory: String!
+  subCategory: String!
+  includeSupplies: Boolean!
+  includeTools: Boolean!
+}
+
+input CreateProductInput {
+  providerId: String!
+  title: String!
+  image: String!
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  mainCategory: String!
+  subCategory: String!
+  includeSupplies: Boolean
+  includeTools: Boolean
+}
+
+input UpdateProductInput {
+  title: String
+  image: String
+  description: String
+  rate: Float
+  rating: Float
+  jobs: Int
+  mainCategory: String
+  subCategory: String
+  includeSupplies: Boolean
+  includeTools: Boolean
+}
+
+type Query {
+  getProducts: [Product]
+  getProductById(id: ID!): Product
+}
+
+type Mutation {
+  createProduct(input: CreateProductInput!): Product
+  updateProduct(id: ID!, input: UpdateProductInput!): Product
+  deleteProduct(id: ID!): Product
+}

@@ -1,0 +1,37 @@
+type Review {
+  id: ID!
+  productId: String!
+  userId: String!
+  categoryId: String!
+  subCategoryId: String!
+  bookingId: String!
+  rating: Float!
+  comment: String!
+  date: String!
+}
+
+input CreateReviewInput {
+  productId: String!
+  userId: String!
+  categoryId: String!
+  subCategoryId: String!
+  bookingId: String!
+  rating: Float!
+  comment: String!
+}
+
+input UpdateReviewInput {
+  rating: Float
+  comment: String
+}
+
+type Query {
+  getReviewById(id: ID!): Review
+  getReviewsByProduct(productId: ID!): [Review]
+}
+
+type Mutation {
+  createReview(input: CreateReviewInput!): Review
+  updateReview(id: ID!, input: UpdateReviewInput!): Review
+  deleteReview(id: ID!): Review
+}
