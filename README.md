@@ -1,18 +1,41 @@
-## Project setup
+Below is a revised version of your README instructions with improved clarity, grammar, and formatting:
+
+---
+
+## Project Setup
+
+1. **Environment Configuration**
+
+   - Copy the `.env.example` file to create your own `.env` file.
+   - Fill in all necessary values in the `.env` file.
+   - Update the Firebase and Google configuration JSON files located in the `config` folder.
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+## Compile and Run the Project
+
+### Development Mode
 
 ```bash
-$ npm install
+npm run start
 ```
 
-## Compile and run the project
+### Watch Mode
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
+
+### Production Mode
+
+```bash
+npm run start:prod
+```
+
+---
+
+This version clearly separates the setup steps and provides concise instructions for each stage.
