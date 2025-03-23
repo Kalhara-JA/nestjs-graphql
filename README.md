@@ -1,7 +1,3 @@
-Below is a revised version of your README instructions with improved clarity, grammar, and formatting:
-
----
-
 ## Project Setup
 
 1. **Environment Configuration**
@@ -37,5 +33,3 @@ npm run start:prod
 ```
 
 ---
-
-This version clearly separates the setup steps and provides concise instructions for each stage.
