@@ -1,7 +1,7 @@
-import { InputType, Field, Float, Int } from '@nestjs/graphql';
+import { Field, Float, Int, ArgsType } from '@nestjs/graphql';
 import { IsOptional, IsBoolean } from 'class-validator';
 
-@InputType()
+@ArgsType()
 export class UpdateProductDto {
   @Field({ nullable: true })
   @IsOptional()

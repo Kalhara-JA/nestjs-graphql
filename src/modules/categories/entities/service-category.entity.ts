@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Field, ObjectType, ID } from '@nestjs/graphql';
+import { SubCategory } from './sub-category.entity';
 
 export type ServiceCategoryDocument = ServiceCategory & Document;
 
@@ -21,6 +22,9 @@ export class ServiceCategory {
   @Prop({ required: true })
   @Field()
   color: string;
+
+  @Field(() => [SubCategory], { nullable: true })
+  subCategories: SubCategory[];
 }
 
 export const ServiceCategorySchema =

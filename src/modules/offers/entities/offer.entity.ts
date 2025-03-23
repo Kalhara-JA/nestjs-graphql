@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
+import { Product } from 'src/modules/products/entities/product.entity';
+import { ServiceCategory } from 'src/modules/categories/entities/service-category.entity';
 
 export type OfferDocument = Offer & Document;
 
@@ -27,12 +29,12 @@ export class Offer {
   appLink?: string;
 
   @Prop({ type: [String], default: [] })
-  @Field(() => [String], { nullable: true })
-  products: string[];
+  @Field(() => [Product], { nullable: true })
+  products: Product[];
 
-  @Prop({ required: true })
-  @Field()
-  categoryId: string;
+  @Prop({ required: false })
+  @Field(() => ServiceCategory)
+  categoryId: ServiceCategory;
 
   @Prop()
   @Field({ nullable: true })

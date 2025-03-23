@@ -11,7 +11,7 @@ export class Product {
   id: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   providerId: string;
 
   @Prop({ required: true })
@@ -43,19 +43,19 @@ export class Product {
   discount?: number;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   mainCategory: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   subCategory: string;
 
   @Prop({ default: false })
-  @Field()
+  @Field({ nullable: true })
   includeSupplies: boolean;
 
   @Prop({ default: false })
-  @Field()
+  @Field({ nullable: true })
   includeTools: boolean;
 }
 

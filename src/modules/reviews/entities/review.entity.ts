@@ -11,23 +11,27 @@ export class Review {
   id: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   productId: string;
 
+  @Prop({ required: false })
+  @Field(() => ID, { nullable: true })
+  providerId: string;
+
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   userId: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   categoryId: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   subCategoryId: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   bookingId: string;
 
   @Prop({ required: true })

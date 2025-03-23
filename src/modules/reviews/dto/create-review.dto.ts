@@ -1,25 +1,25 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
+import { Field, Float, ID, ArgsType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-@InputType()
+@ArgsType()
 export class CreateReviewDto {
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   productId: string;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   userId: string;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   categoryId: string;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   subCategoryId: string;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   bookingId: string;
 

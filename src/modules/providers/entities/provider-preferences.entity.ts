@@ -9,11 +9,8 @@ export type ProviderPreferencesDocument = ProviderPreferences & Document;
 @Schema()
 @ObjectType()
 export class ProviderPreferences {
-  @Field(() => ID)
-  id: string;
-
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   providerId: string;
 
   @Prop({

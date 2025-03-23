@@ -13,7 +13,7 @@ export class ProductDetail {
   @Field(() => ID)
   id: string;
 
-  @Field(() => Provider)
+  @Field(() => Provider, { nullable: true })
   provider: Provider;
 
   @Field()
@@ -34,19 +34,16 @@ export class ProductDetail {
   @Field(() => Int, { nullable: true })
   jobs?: number;
 
-  @Field(() => Int, { nullable: true })
-  discount?: number;
-
-  @Field(() => ServiceCategory)
+  @Field(() => ServiceCategory, { nullable: true })
   mainCategory: ServiceCategory;
 
-  @Field(() => SubCategory)
+  @Field(() => SubCategory, { nullable: true })
   subCategory: SubCategory;
 
-  @Field()
+  @Field({ nullable: true })
   includeSupplies: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   includeTools: boolean;
 }
 

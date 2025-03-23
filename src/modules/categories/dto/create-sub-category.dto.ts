@@ -1,7 +1,7 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { Field, ID, ArgsType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
-@InputType()
+@ArgsType()
 export class CreateSubCategoryDto {
   @Field()
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class CreateSubCategoryDto {
   @IsNotEmpty()
   color: string;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   categoryId: string;
 }

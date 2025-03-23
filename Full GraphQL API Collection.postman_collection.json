@@ -1,0 +1,1882 @@
+{
+	"info": {
+		"_postman_id": "fa9f2950-7f09-4df7-9af2-4bceb65ac5af",
+		"name": "Full GraphQL API Collection",
+		"description": "This collection includes all queries and mutations defined in the schema. It uses the endpoint {{api-url}}/graphql and Authorization header with Bearer {{token}}.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32693465"
+	},
+	"item": [
+		{
+			"name": "Queries",
+			"item": [
+				{
+					"name": "getUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUser($firebaseId: String!) {\n  getUser(firebaseId: $firebaseId) {\n    id\n    firstName\n    lastName\n    email\n  }\n}",
+								"variables": "{\n  \"firebaseId\": \"sample_firebase_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUserById($id: String!) {\n  getUserById(id: $id) {\n    id\n    firstName\n    lastName\n    email\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUsers {\n  getUsers {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getUsersPaginated",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUsersPaginated($page: Int, $pageSize: Int) {\n  getUsersPaginated(page: $page, pageSize: $pageSize) {\n    users { id firstName lastName }\n    totalCount\n  }\n}",
+								"variables": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getAddressesByUserId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getAddressesByUserId($userId: ID!) {\n  getAddressesByUserId(userId: $userId) {\n    id\n    name\n    address\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getLegalDataByUserId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getLegalDataByUserId($userId: ID!) {\n  getLegalDataByUserId(userId: $userId) {\n    id\n    personType\n    documentType\n    documentNumber\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getFavoriteProductsByUserId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getFavoriteProductsByUserId($userId: ID!) {\n  getFavoriteProductsByUserId(userId: $userId) {\n    id\n    productId\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingsByUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getBookingsByUser($userId: ID!) {\n  getBookingsByUser(userId: $userId) {\n    id\n    status\n    date\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingsByProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getBookingsByProvider($providerId: ID!) {\n  getBookingsByProvider(providerId: $providerId) {\n    id\n    status\n    date\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getAcceptedBookingsByProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getAcceptedBookingsByProvider($providerId: ID!, $date: String) {\n  getAcceptedBookingsByProvider(providerId: $providerId, date: $date) {\n    id\n    status\n    date\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\",\n  \"date\": \"2025-03-23\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingDetail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getBookingDetail($bookingId: ID!) {\n  getBookingDetail(bookingId: $bookingId) {\n    booking { id status }\n    user { id firstName }\n    address { id name }\n    provider { id firstName }\n    product { id title }\n  }\n}",
+								"variables": "{\n  \"bookingId\": \"sample_booking_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProviders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProviders {\n  getProviders {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProvidersPaginated",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProvidersPaginated($page: Int, $pageSize: Int) {\n  getProvidersPaginated(page: $page, pageSize: $pageSize) {\n    providers { id firstName lastName }\n    totalCount\n  }\n}",
+								"variables": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProvider($id: ID!) {\n  getProvider(id: $id) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProviderByFirebaseId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProviderByFirebaseId($firebaseId: String!) {\n  getProviderByFirebaseId(firebaseId: $firebaseId) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"firebaseId\": \"sample_firebase_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "providerExists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query providerExists($firebaseId: String!) {\n  providerExists(firebaseId: $firebaseId)\n}",
+								"variables": "{\n  \"firebaseId\": \"sample_firebase_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProviderPreferences",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProviderPreferences($providerId: ID!) {\n  getProviderPreferences(providerId: $providerId) {\n    providerId\n    workingHours { startTime endTime }\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getServiceCategories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getServiceCategories {\n  getServiceCategories {\n    id\n    title\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getServiceCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getServiceCategory($id: ID!) {\n  getServiceCategory(id: $id) {\n    id\n    title\n    image\n    color\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getSubCategoriesByCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getSubCategoriesByCategory($categoryId: ID!) {\n  getSubCategoriesByCategory(categoryId: $categoryId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"categoryId\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getSubCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getSubCategory($id: ID!) {\n  getSubCategory(id: $id) {\n    id\n    title\n    image\n    color\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_subcategory_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "searchCategories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query searchCategories($searchTerm: String!) {\n  searchCategories(searchTerm: $searchTerm) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"searchTerm\": \"sample\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCategoriesAndSubCategories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getAllCategoriesAndSubCategories {\n  getAllCategoriesAndSubCategories {\n    id\n    title\n    subCategories { id title }\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProducts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProducts {\n  getProducts {\n    id\n    title\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProduct($id: ID!) {\n  getProduct(id: $id) {\n    id\n    title\n    description\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProductDetail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProductDetail($id: ID!) {\n  getProductDetail(id: $id) {\n    id\n    title\n    description\n    provider { id firstName }\n    mainCategory { id title }\n    subCategory { id title }\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProductsByCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProductsByCategory($categoryId: ID!) {\n  getProductsByCategory(categoryId: $categoryId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"categoryId\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProductsBySubCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProductsBySubCategory($subCategoryId: ID!) {\n  getProductsBySubCategory(subCategoryId: $subCategoryId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"subCategoryId\": \"sample_subcategory_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProductsByProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProductsByProvider($providerId: ID!) {\n  getProductsByProvider(providerId: $providerId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getDiscountedProducts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getDiscountedProducts($discount: Float!, $categoryId: ID) {\n  getDiscountedProducts(discount: $discount, categoryId: $categoryId) {\n    id\n    title\n    discount\n  }\n}",
+								"variables": "{\n  \"discount\": 20,\n  \"categoryId\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getReview($id: ID!) {\n  getReview(id: $id) {\n    id\n    rating\n    comment\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_review_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getReviewsByProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getReviewsByProduct($productId: ID!) {\n  getReviewsByProduct(productId: $productId) {\n    id\n    rating\n    comment\n  }\n}",
+								"variables": "{\n  \"productId\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getReviewsWithDetailsByProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getReviewsWithDetailsByProvider($providerId: ID!) {\n  getReviewsWithDetailsByProvider(providerId: $providerId) {\n    id\n    rating\n    comment\n    servicesCount\n    user { id firstName }\n    category\n    subCategory\n    provider { id firstName }\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getReviewsWithDetailsByProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getReviewsWithDetailsByProduct($productId: ID!) {\n  getReviewsWithDetailsByProduct(productId: $productId) {\n    id\n    rating\n    comment\n    user { id firstName }\n    category\n    subCategory\n    provider { id firstName }\n  }\n}",
+								"variables": "{\n  \"productId\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProductsWithDetails",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProductsWithDetails {\n  getProductsWithDetails {\n    id\n    title\n    provider { id firstName }\n    mainCategory { id title }\n    subCategory { id title }\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getOffers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOffers {\n  getOffers {\n    id\n    title\n    discount\n    imageUrl\n  }\n}",
+								"variables": "{}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getOffer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOffer($id: ID!) {\n  getOffer(id: $id) {\n    id\n    title\n    discount\n    imageUrl\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_offer_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserFCMTokenById",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUserFCMTokenById($id: ID!) {\n  getUserFCMTokenById(id: $id)\n}",
+								"variables": "{\n  \"id\": \"sample_user_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "getProviderFCMTokenById",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getProviderFCMTokenById($id: ID!) {\n  getProviderFCMTokenById(id: $id)\n}",
+								"variables": "{\n  \"id\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mutations",
+			"item": [
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createUser($uid: String!, $firstName: String!, $lastName: String!, $email: String!, $firebaseId: String!, $phoneNumber: String!, $profilePicture: String) {\n  createUser(uid: $uid, firstName: $firstName, lastName: $lastName, email: $email, firebaseId: $firebaseId, phoneNumber: $phoneNumber, profilePicture: $profilePicture) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"uid\": \"sample_uid\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"firebaseId\": \"sample_firebase_id\",\n  \"phoneNumber\": \"1234567890\",\n  \"profilePicture\": \"http://example.com/avatar.png\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateUser($id: ID!, $firstName: String, $lastName: String, $email: String, $phoneNumber: String, $profilePicture: String) {\n  updateUser(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, profilePicture: $profilePicture) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_user_id\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane@example.com\",\n  \"phoneNumber\": \"0987654321\",\n  \"profilePicture\": \"http://example.com/avatar2.png\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateUserFCMToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateUserFCMToken($id: ID!, $fcmToken: String) {\n  updateUserFCMToken(id: $id, fcmToken: $fcmToken) {\n    id\n    fcmToken\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_user_id\",\n  \"fcmToken\": \"sample_fcm_token\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createAddress",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createAddress($name: String!, $address: String!, $userId: ID!, $latitude: String, $longitude: String, $additional: String) {\n  createAddress(name: $name, address: $address, userId: $userId, latitude: $latitude, longitude: $longitude, additional: $additional) {\n    id\n    name\n    address\n  }\n}",
+								"variables": "{\n  \"name\": \"Home\",\n  \"address\": \"123 Main St\",\n  \"userId\": \"sample_user_id\",\n  \"latitude\": \"0.0000\",\n  \"longitude\": \"0.0000\",\n  \"additional\": \"Apt 1\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createLegalData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createLegalData($userId: ID!, $personType: String!, $documentType: String!, $documentNumber: String!) {\n  createLegalData(userId: $userId, personType: $personType, documentType: $documentType, documentNumber: $documentNumber) {\n    id\n    personType\n    documentType\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\",\n  \"personType\": \"Individual\",\n  \"documentType\": \"ID\",\n  \"documentNumber\": \"123456789\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateLegalData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateLegalData($id: ID!, $personType: String, $documentType: String, $documentNumber: String) {\n  updateLegalData(id: $id, personType: $personType, documentType: $documentType, documentNumber: $documentNumber) {\n    id\n    personType\n    documentType\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_legaldata_id\",\n  \"personType\": \"Corporate\",\n  \"documentType\": \"Passport\",\n  \"documentNumber\": \"987654321\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "addFavoriteProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation addFavoriteProduct($userId: ID!, $productId: ID!) {\n  addFavoriteProduct(userId: $userId, productId: $productId) {\n    id\n    productId\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\",\n  \"productId\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "removeFavoriteProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation removeFavoriteProduct($userId: ID!, $productId: ID!) {\n  removeFavoriteProduct(userId: $userId, productId: $productId) {\n    id\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\",\n  \"productId\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createBooking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createBooking($userId: ID!, $providerId: ID!, $productId: ID!, $date: ID!, $time: String!, $address: String!, $hours: String, $type: String) {\n  createBooking(userId: $userId, providerId: $providerId, productId: $productId, date: $date, time: $time, address: $address, hours: $hours, type: $type) {\n    id\n    status\n  }\n}",
+								"variables": "{\n  \"userId\": \"sample_user_id\",\n  \"providerId\": \"sample_provider_id\",\n  \"productId\": \"sample_product_id\",\n  \"date\": \"2025-03-23\",\n  \"time\": \"10:00 AM\",\n  \"address\": \"sample_address_id\",\n  \"hours\": \"2\",\n  \"type\": \"standard\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateBookingStatus",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateBookingStatus($id: ID!, $status: String!, $notes: String) {\n  updateBookingStatus(id: $id, status: $status, notes: $notes) {\n    id\n    status\n    notes\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_booking_id\",\n  \"status\": \"confirmed\",\n  \"notes\": \"Service confirmed\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateBookingType",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateBookingType($id: ID!, $type: String!, $newPrice: String) {\n  updateBookingType(id: $id, type: $type, newPrice: $newPrice) {\n    id\n    type\n    newPrice\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_booking_id\",\n  \"type\": \"premium\",\n  \"newPrice\": \"150\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createProvider($firstName: String!, $lastName: String!, $email: String!, $phone: String!, $image: String!, $firebaseId: String!) {\n  createProvider(firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, image: $image, firebaseId: $firebaseId) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"firstName\": \"Provider\",\n  \"lastName\": \"One\",\n  \"email\": \"provider@example.com\",\n  \"phone\": \"1231231234\",\n  \"image\": \"http://example.com/provider.png\",\n  \"firebaseId\": \"sample_provider_firebase\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateProvider($id: ID!, $firstName: String, $lastName: String, $email: String, $phone: String, $image: String) {\n  updateProvider(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, image: $image) {\n    id\n    firstName\n    lastName\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_provider_id\",\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Provider\",\n  \"email\": \"updated@example.com\",\n  \"phone\": \"3213214321\",\n  \"image\": \"http://example.com/updated.png\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProvider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteProvider($id: ID!) {\n  deleteProvider(id: $id) {\n    id\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_provider_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "setWorkingHours",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation setWorkingHours($providerId: ID!, $startTime: String!, $endTime: String!) {\n  setWorkingHours(providerId: $providerId, startTime: $startTime, endTime: $endTime) {\n    providerId\n    workingHours { startTime endTime }\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\",\n  \"startTime\": \"09:00\",\n  \"endTime\": \"17:00\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateProviderFCMToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateProviderFCMToken($providerId: ID!, $fcmToken: String) {\n  updateProviderFCMToken(providerId: $providerId, fcmToken: $fcmToken) {\n    id\n    fcmToken\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\",\n  \"fcmToken\": \"sample_provider_fcm_token\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createServiceCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createServiceCategory($title: String!, $image: String!, $color: String!) {\n  createServiceCategory(title: $title, image: $image, color: $color) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"title\": \"Cleaning\",\n  \"image\": \"http://example.com/cleaning.png\",\n  \"color\": \"#ffffff\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateServiceCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateServiceCategory($id: ID!, $title: String, $image: String, $color: String) {\n  updateServiceCategory(id: $id, title: $title, image: $image, color: $color) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_category_id\",\n  \"title\": \"Updated Category\",\n  \"image\": \"http://example.com/updated.png\",\n  \"color\": \"#000000\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteServiceCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteServiceCategory($id: ID!) {\n  deleteServiceCategory(id: $id) {\n    id\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createSubCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createSubCategory($title: String!, $image: String!, $color: String!, $categoryId: ID!) {\n  createSubCategory(title: $title, image: $image, color: $color, categoryId: $categoryId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"title\": \"Vacuuming\",\n  \"image\": \"http://example.com/vacuum.png\",\n  \"color\": \"#cccccc\",\n  \"categoryId\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateSubCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateSubCategory($id: ID!, $title: String, $image: String, $color: String, $categoryId: ID!) {\n  updateSubCategory(id: $id, title: $title, image: $image, color: $color, categoryId: $categoryId) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_subcategory_id\",\n  \"title\": \"Updated SubCategory\",\n  \"image\": \"http://example.com/updated_sub.png\",\n  \"color\": \"#aaaaaa\",\n  \"categoryId\": \"sample_category_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSubCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteSubCategory($id: ID!) {\n  deleteSubCategory(id: $id) {\n    id\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_subcategory_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createProduct($providerId: ID!, $title: String!, $image: String!, $description: String, $rate: Float, $rating: Float, $jobs: Int, $mainCategory: ID!, $subCategory: ID!, $includeSupplies: Boolean, $includeTools: Boolean) {\n  createProduct(providerId: $providerId, title: $title, image: $image, description: $description, rate: $rate, rating: $rating, jobs: $jobs, mainCategory: $mainCategory, subCategory: $subCategory, includeSupplies: $includeSupplies, includeTools: $includeTools) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"providerId\": \"sample_provider_id\",\n  \"title\": \"Sample Product\",\n  \"image\": \"http://example.com/product.png\",\n  \"description\": \"A sample product description.\",\n  \"rate\": 50,\n  \"rating\": 4.5,\n  \"jobs\": 10,\n  \"mainCategory\": \"sample_category_id\",\n  \"subCategory\": \"sample_subcategory_id\",\n  \"includeSupplies\": true,\n  \"includeTools\": false\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateProduct($id: ID!, $title: String, $image: String, $description: String, $rate: Float, $rating: Float, $jobs: Int, $mainCategory: ID!, $subCategory: ID!, $includeSupplies: Boolean, $includeTools: Boolean) {\n  updateProduct(id: $id, title: $title, image: $image, description: $description, rate: $rate, rating: $rating, jobs: $jobs, mainCategory: $mainCategory, subCategory: $subCategory, includeSupplies: $includeSupplies, includeTools: $includeTools) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_product_id\",\n  \"title\": \"Updated Product\",\n  \"image\": \"http://example.com/updated_product.png\",\n  \"description\": \"Updated description.\",\n  \"rate\": 60,\n  \"rating\": 4.7,\n  \"jobs\": 12,\n  \"mainCategory\": \"sample_category_id\",\n  \"subCategory\": \"sample_subcategory_id\",\n  \"includeSupplies\": false,\n  \"includeTools\": true\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteProduct($id: ID!) {\n  deleteProduct(id: $id) {\n    id\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_product_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createReview($productId: ID!, $userId: ID!, $categoryId: ID!, $subCategoryId: ID!, $bookingId: ID!, $rating: Float!, $comment: String) {\n  createReview(productId: $productId, userId: $userId, categoryId: $categoryId, subCategoryId: $subCategoryId, bookingId: $bookingId, rating: $rating, comment: $comment) {\n    id\n    rating\n    comment\n  }\n}",
+								"variables": "{\n  \"productId\": \"sample_product_id\",\n  \"userId\": \"sample_user_id\",\n  \"categoryId\": \"sample_category_id\",\n  \"subCategoryId\": \"sample_subcategory_id\",\n  \"bookingId\": \"sample_booking_id\",\n  \"rating\": 5,\n  \"comment\": \"Excellent!\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateReview($id: ID!, $rating: Int, $comment: String) {\n  updateReview(id: $id, rating: $rating, comment: $comment) {\n    id\n    rating\n    comment\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_review_id\",\n  \"rating\": 4,\n  \"comment\": \"Good, but could be improved\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteReview($id: ID!) {\n  deleteReview(id: $id)\n}",
+								"variables": "{\n  \"id\": \"sample_review_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "createOffer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createOffer($input: OfferInput!) {\n  createOffer(input: $input) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"title\": \"Special Discount\",\n    \"subtitle\": \"Limited time offer\",\n    \"discount\": 25,\n    \"appLink\": \"http://example.com/app\",\n    \"products\": [\"sample_product_id\"],\n    \"categoryId\": \"sample_category_id\",\n    \"image\": \"http://example.com/offer.png\",\n    \"imageUrl\": \"http://example.com/offer.png\",\n    \"isActive\": true,\n    \"expirationDate\": \"2025-12-31\"\n  }\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "updateOffer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateOffer($id: ID!, $input: OfferInput!) {\n  updateOffer(id: $id, input: $input) {\n    id\n    title\n  }\n}",
+								"variables": "{\n  \"id\": \"sample_offer_id\",\n  \"input\": {\n    \"title\": \"Updated Offer\",\n    \"subtitle\": \"New subtitle\",\n    \"discount\": 30,\n    \"appLink\": \"http://example.com/newapp\",\n    \"products\": [\"sample_product_id\"],\n    \"categoryId\": \"sample_category_id\",\n    \"image\": \"http://example.com/updated_offer.png\",\n    \"imageUrl\": \"http://example.com/updated_offer.png\",\n    \"isActive\": true,\n    \"expirationDate\": \"2025-11-30\"\n  }\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOffer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation deleteOffer($id: ID!) {\n  deleteOffer(id: $id)\n}",
+								"variables": "{\n  \"id\": \"sample_offer_id\"\n}"
+							}
+						},
+						"url": "{{api-url}}/graphql"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "generate token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{api-url}}/generate-test-token"
+			},
+			"response": []
+		},
+		{
+			"name": "get a custom client token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"generated-token-here\",\n    \"returnSecureToken\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={{web-api-key}}",
+					"protocol": "https",
+					"host": [
+						"identitytoolkit",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"v1",
+						"accounts:signInWithCustomToken"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{web-api-key}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/kalhara/Downloads/sampleimage.png"
+						},
+						{
+							"key": "offerId",
+							"value": "YOUR_OFFER_ID",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{api-url}}/api/upload-image"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api-url",
+			"value": "https://your-api-url.com"
+		},
+		{
+			"key": "token",
+			"value": "your_bearer_token_here"
+		},
+		{
+			"key": "web-api-key",
+			"value": "your_firebase_project_web_api_key",
+			"type": "default"
+		}
+	]
+}

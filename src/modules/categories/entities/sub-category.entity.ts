@@ -23,7 +23,7 @@ export class SubCategory {
   color: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   categoryId: string;
 }
 

@@ -11,15 +11,15 @@ export class Booking {
   id: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   userId: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   providerId: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   productId: string;
 
   @Prop({ required: true })
@@ -31,7 +31,7 @@ export class Booking {
   time: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   address: string;
 
   @Prop()

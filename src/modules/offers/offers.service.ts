@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Offer, OfferDocument } from './entities/offer.entity';
 import { Model } from 'mongoose';
-import { CreateOfferDto } from './dto/create-offer.dto';
+// import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
+import { OfferInput } from './dto/input-offer.dto';
 
 @Injectable()
 export class OfferService {
@@ -11,7 +12,7 @@ export class OfferService {
     @InjectModel(Offer.name) private offerModel: Model<OfferDocument>,
   ) {}
 
-  async create(createOfferDto: CreateOfferDto): Promise<Offer> {
+  async create(createOfferDto: OfferInput): Promise<Offer> {
     const offer = new this.offerModel({
       ...createOfferDto,
       creationDate: new Date().toISOString(),

@@ -19,7 +19,7 @@ export class Address {
   address: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   userId: string;
 
   @Prop()

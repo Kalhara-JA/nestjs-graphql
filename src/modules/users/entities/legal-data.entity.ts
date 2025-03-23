@@ -11,7 +11,7 @@ export class LegalData {
   id: string;
 
   @Prop({ required: true })
-  @Field()
+  @Field(() => ID)
   userId: string;
 
   @Prop({ required: true })

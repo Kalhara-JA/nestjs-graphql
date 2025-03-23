@@ -78,4 +78,37 @@ export class CategoryService {
   ): Promise<SubCategory[]> {
     return this.subCategoryModel.find({ categoryId }).exec();
   }
+
+  async searchCategories(searchTerm: string): Promise<ServiceCategory[]> {
+    try {
+      // Search for categories where the title matches the search term (case-insensitive)
+      const categories = await this.categoryModel
+        .find({
+          title: new RegExp(searchTerm, 'i'),
+        })
+        .exec();
+      return categories;
+    } catch (error) {
+      console.error('Error searching categories:', error);
+      throw new Error('Failed to search categories');
+    }
+  }
+
+  async findCategoryById(id: string): Promise<ServiceCategory> {
+    const category = await this.categoryModel.findById(id).exec();
+    if (!category) throw new NotFoundException('Category not found');
+    return category;
+  }
+
+  // New service method: Find a single subcategory by its ID
+  async findSubCategoryById(id: string): Promise<SubCategory> {
+    const subCategory = await this.subCategoryModel.findById(id).exec();
+    if (!subCategory) throw new NotFoundException('SubCategory not found');
+    return subCategory;
+  }
+
+  // New service method: Get all categories with their subCategories
+  async findAllCategoriesAndSubCategories(): Promise<ServiceCategory[]> {
+    return this.categoryModel.find().populate('subCategories').exec();
+  }
 }

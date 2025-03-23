@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Address } from './entities/address.entity';
 import { LegalData } from './entities/legal-data.entity';
 import { FavoriteProduct } from '../products/entities/favourite-product.entity';
+import { UsersResponse } from './entities/users-response.entity';
 @Injectable()
 export class UserService {
   constructor(
@@ -111,5 +112,43 @@ export class UserService {
     );
     if (!updated) throw new NotFoundException('Legal Data not found');
     return updated;
+  }
+
+  async getUsersPaginated(
+    page: number = 1,
+    pageSize: number = 10,
+  ): Promise<UsersResponse> {
+    if (page < 1) {
+      page = 1;
+    }
+    const skip = (page - 1) * pageSize;
+    const users = await this.userModel.find().skip(skip).limit(pageSize).exec();
+    const totalCount = await this.userModel.countDocuments();
+    return { users, totalCount };
+  }
+
+  async getUserFCMTokenById(id: string): Promise<string> {
+    // Check if the provided id is a valid ObjectId.
+    if (Types.ObjectId.isValid(id)) {
+      const user = await this.userModel.findById(id).select('fcmToken').exec();
+      if (user) {
+        if (!user.fcmToken) {
+          throw new NotFoundException('FCM Token not found');
+        }
+        return user.fcmToken;
+      }
+    }
+    // If not found by ObjectId, try to find a user by firebaseId.
+    const userByFirebase = await this.userModel
+      .findOne({ firebaseId: id })
+      .select('fcmToken')
+      .exec();
+    if (userByFirebase) {
+      if (!userByFirebase.fcmToken) {
+        throw new NotFoundException('FCM Token not found');
+      }
+      return userByFirebase.fcmToken;
+    }
+    throw new NotFoundException('User not found');
   }
 }

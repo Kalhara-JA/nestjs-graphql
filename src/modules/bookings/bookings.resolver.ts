@@ -49,16 +49,14 @@ export class BookingResolver {
   }
 
   @Mutation(() => Booking)
-  async createBooking(
-    @Args('input') input: CreateBookingDto,
-  ): Promise<Booking> {
+  async createBooking(@Args() input: CreateBookingDto): Promise<Booking> {
     return this.bookingService.create(input);
   }
 
   @Mutation(() => Booking)
   async updateBookingStatus(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: UpdateBookingStatusDto,
+    @Args() input: UpdateBookingStatusDto,
   ): Promise<Booking> {
     return this.bookingService.updateStatus(id, input);
   }
@@ -66,7 +64,7 @@ export class BookingResolver {
   @Mutation(() => Booking)
   async updateBookingType(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: UpdateBookingTypeDto,
+    @Args() input: UpdateBookingTypeDto,
   ): Promise<Booking> {
     return this.bookingService.updateType(id, input);
   }

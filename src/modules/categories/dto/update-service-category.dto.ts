@@ -1,7 +1,7 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { Field, ArgsType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@InputType()
+@ArgsType()
 export class UpdateServiceCategoryDto {
   @Field({ nullable: true })
   @IsOptional()

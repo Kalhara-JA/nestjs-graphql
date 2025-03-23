@@ -17,9 +17,28 @@ export class CategoryResolver {
     return this.categoryService.findAllCategories();
   }
 
+  @Query(() => ServiceCategory, { name: 'getServiceCategory' })
+  async getServiceCategory(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<ServiceCategory> {
+    return this.categoryService.findCategoryById(id);
+  }
+
+  @Query(() => SubCategory, { name: 'getSubCategory' })
+  async getSubCategory(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<SubCategory> {
+    return this.categoryService.findSubCategoryById(id);
+  }
+
+  @Query(() => [ServiceCategory], { name: 'getAllCategoriesAndSubCategories' })
+  async getAllCategoriesAndSubCategories(): Promise<ServiceCategory[]> {
+    return this.categoryService.findAllCategoriesAndSubCategories();
+  }
+
   @Mutation(() => ServiceCategory)
   async createServiceCategory(
-    @Args('input') input: CreateServiceCategoryDto,
+    @Args() input: CreateServiceCategoryDto,
   ): Promise<ServiceCategory> {
     return this.categoryService.createCategory(input);
   }
@@ -27,7 +46,7 @@ export class CategoryResolver {
   @Mutation(() => ServiceCategory)
   async updateServiceCategory(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: UpdateServiceCategoryDto,
+    @Args() input: UpdateServiceCategoryDto,
   ): Promise<ServiceCategory> {
     return this.categoryService.updateCategory(id, input);
   }
@@ -47,9 +66,16 @@ export class CategoryResolver {
     return this.categoryService.findSubCategoriesByCategory(categoryId);
   }
 
+  @Query(() => [ServiceCategory], { name: 'searchCategories' })
+  async searchCategories(
+    @Args('searchTerm', { type: () => String }) searchTerm: string,
+  ): Promise<ServiceCategory[]> {
+    return this.categoryService.searchCategories(searchTerm);
+  }
+
   @Mutation(() => SubCategory)
   async createSubCategory(
-    @Args('input') input: CreateSubCategoryDto,
+    @Args() input: CreateSubCategoryDto,
   ): Promise<SubCategory> {
     return this.categoryService.createSubCategory(input);
   }
@@ -57,7 +83,7 @@ export class CategoryResolver {
   @Mutation(() => SubCategory)
   async updateSubCategory(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: UpdateSubCategoryDto,
+    @Args() input: UpdateSubCategoryDto,
   ): Promise<SubCategory> {
     return this.categoryService.updateSubCategory(id, input);
   }

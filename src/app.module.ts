@@ -13,12 +13,15 @@ import { BookingsModule } from './modules/bookings/bookings.module';
 import { ProvidersModule } from './modules/providers/providers.module';
 import { ProductsModule } from './modules/products/products.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { UploadsModule } from './modules/uploads/uploads.module';
+import { FirebaseModule } from './modules/firebase/firebase.module';
+import { FirebaseAuthGuard } from './modules/firebase/firebase-auth.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://test-user-mongo:dbpasswordx12345@main.v6tdble.mongodb.net/?retryWrites=true&w=majority&appName=main',
-    ),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI as string),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
       playground: false,
@@ -32,8 +35,16 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     CategoriesModule,
     ReviewsModule,
     OffersModule,
+    UploadsModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_GUARD',
+      useClass: FirebaseAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
