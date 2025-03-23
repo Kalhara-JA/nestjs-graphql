@@ -1,4 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Booking, BookingDocument } from './entities/booking.entity';
 import { Model, FilterQuery } from 'mongoose';
@@ -23,6 +30,8 @@ import {
 } from '../categories/entities/sub-category.entity';
 import { BookingDetail } from './entities/booking-detail.entity';
 import { ProductDetail } from '../products/entities/product-detail.entity';
+import { formatDateToDDMMYYYY } from 'src/utils/format.util';
+import { messaging } from 'firebase-admin';
 
 @Injectable()
 export class BookingService {
@@ -47,7 +56,30 @@ export class BookingService {
       securityCode,
       status: 'pending',
     });
-    return createdBooking.save();
+    const bookingCreated = await createdBooking.save();
+
+    const provider = await this.providerModel.findById(
+      createBookingDto.providerId,
+    );
+
+    if (provider && provider.fcmToken) {
+      const currentDate = new Date();
+      const formattedDate = formatDateToDDMMYYYY(currentDate);
+      const message = {
+        notification: {
+          title: 'Nuevo servicio solicitado',
+          body: `Tienes un nuevo servicio solicitado para el ${formattedDate} a las ${createBookingDto.time}, entra ahora para aceptarlo o rechazarlo`,
+        },
+        token: provider.fcmToken,
+      };
+
+      messaging()
+        .send(message)
+        .then((response) => console.log('Successfully sent message:', response))
+        .catch((error) => console.log('Error sending message:', error));
+    }
+
+    return bookingCreated;
   }
 
   async findById(id: string): Promise<Booking> {
@@ -68,26 +100,142 @@ export class BookingService {
     id: string,
     updateDto: UpdateBookingStatusDto,
   ): Promise<Booking> {
-    const updated = await this.bookingModel.findByIdAndUpdate(
-      id,
-      { status: updateDto.status, notes: updateDto.notes },
-      { new: true },
-    );
-    if (!updated) throw new NotFoundException('Booking not found');
-    return updated;
+    try {
+      // 1. Update the booking with the new status and notes
+      const updatedBooking = await this.bookingModel.findByIdAndUpdate(
+        id,
+        {
+          status: updateDto.status,
+          notes: updateDto.notes,
+        },
+        { new: true },
+      );
+
+      if (!updatedBooking) {
+        throw new NotFoundException('Booking not found');
+      }
+
+      // 2. Gather related data (user, provider, product, category)
+      const booking = updatedBooking;
+      const user = await this.userModel.findById(booking.userId);
+      const provider = await this.providerModel.findById(booking.providerId);
+      const product = await this.productModel.findById(booking.productId);
+
+      // Guard against missing product
+      if (!product) {
+        return updatedBooking;
+      }
+
+      const mainCategory = await this.serviceCategoryModel.findById(
+        product.mainCategory,
+      );
+
+      // 3. Map statuses to Spanish equivalents (adjust to your needs)
+      const bookingStatusMap = {
+        confirmed: 'Confirmado',
+        started: 'Iniciado',
+        pending: 'Pendiente',
+        cancelled: 'Cancelado',
+        completed: 'Completado',
+      };
+
+      const translatedStatus =
+        bookingStatusMap[updateDto.status] || updateDto.status;
+
+      // 4. If the user has an FCM token, send a push notification
+      if (user?.fcmToken) {
+        const userMessage = {
+          notification: {
+            title: 'Estado de tu servicio',
+            body: `Tu servicio de ${mainCategory?.title ?? 'servicio'} ha cambiado a estado: ${translatedStatus}. Entra ahora para verificarlo.`,
+          },
+          token: user.fcmToken,
+        };
+
+        messaging()
+          .send(userMessage)
+          .then((response) =>
+            console.log('Successfully sent message to user:', response),
+          )
+          .catch((error) =>
+            console.error('Error sending message to user:', error),
+          );
+
+        // 5. If the booking was completed, optionally notify the provider too
+        if (updateDto.status === 'completed' && provider?.fcmToken) {
+          const providerMessage = {
+            notification: {
+              title: 'Servicio finalizado',
+              body: `Tu servicio de ${mainCategory?.title ?? 'servicio'} ha finalizado ¡Bien hecho!`,
+            },
+            token: provider.fcmToken,
+          };
+
+          messaging()
+            .send(providerMessage)
+            .then((response) =>
+              console.log('Successfully sent message to provider:', response),
+            )
+            .catch((error) =>
+              console.error('Error sending message to provider:', error),
+            );
+        }
+      }
+
+      // 6. Return the updated booking
+      return updatedBooking;
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+      throw new InternalServerErrorException(
+        'Failed to update booking status.',
+      );
+    }
   }
 
   async updateType(
     id: string,
     updateDto: UpdateBookingTypeDto,
   ): Promise<Booking> {
-    const updated = await this.bookingModel.findByIdAndUpdate(
-      id,
-      { type: updateDto.type, newPrice: updateDto.newPrice },
-      { new: true },
-    );
-    if (!updated) throw new NotFoundException('Booking not found');
-    return updated;
+    try {
+      // 1. Update the booking's type and price
+      const updatedBooking = await this.bookingModel.findByIdAndUpdate(
+        id,
+        {
+          type: updateDto.type,
+          newPrice: updateDto.newPrice,
+        },
+        { new: true },
+      );
+
+      if (!updatedBooking) {
+        throw new NotFoundException('Booking not found');
+      }
+
+      // 2. Fetch the user and send a push notification if an FCM token exists
+      const user = await this.userModel.findById(updatedBooking.userId);
+      if (user?.fcmToken) {
+        const message = {
+          notification: {
+            title: 'Cambios en tu servicio',
+            body: `Tu servicio tiene un nuevo precio de: $${updateDto.newPrice}, entra ahora para verificarlo.`,
+          },
+          token: user.fcmToken,
+        };
+
+        messaging()
+          .send(message)
+          .then((response) =>
+            console.log('Successfully sent message:', response),
+          )
+          .catch((error) => console.error('Error sending message:', error));
+      }
+
+      // 3. Return the updated booking
+      return updatedBooking;
+    } catch (error) {
+      console.error('Error updating booking type:', error);
+      throw new InternalServerErrorException('Failed to update booking type.');
+    }
   }
 
   // New Method: get accepted bookings by provider (status "confirmed")

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review, ReviewDocument } from './entities/review.entity';
 import { Model } from 'mongoose';
@@ -34,8 +38,75 @@ export class ReviewService {
   ) {}
 
   async create(createReviewDto: CreateReviewDto): Promise<Review> {
-    const review = new this.reviewModel(createReviewDto);
-    return review.save();
+    try {
+      // 1. Create the new review document
+      const newReview = new this.reviewModel({
+        ...createReviewDto,
+        date: new Date(), // or any other date logic you need
+      });
+
+      await newReview.save();
+
+      // 2. Fetch the related product to update its average rating
+      const product = await this.productModel.findById(
+        createReviewDto.productId,
+      );
+      if (!product) {
+        throw new NotFoundException('Product not found');
+      }
+
+      // Count how many total reviews the product has
+      const totalReviews = await this.reviewModel.countDocuments({
+        productId: createReviewDto.productId,
+      });
+
+      // If the product has no previous rating, default to 0
+      const currentProductRating = product.rating || 0;
+      // new total rating = (old rating * (totalReviews - 1) + new rating) / totalReviews
+      const totalRatingSum =
+        currentProductRating * (totalReviews - 1) + createReviewDto.rating;
+
+      const newAverageRating =
+        totalReviews > 0 ? totalRatingSum / totalReviews : 0;
+
+      // Update the product’s average rating
+      product.rating = newAverageRating;
+      await product.save();
+
+      // 3. Update the provider’s average rating
+      const providerId = product.providerId;
+      const providerProducts = await this.productModel.find({ providerId });
+      if (providerProducts.length > 0) {
+        // Count reviews across all of this provider’s products
+        const totalProviderReviews = await this.reviewModel.countDocuments({
+          productId: { $in: providerProducts.map((p) => p._id) },
+        });
+
+        // Sum up the products’ ratings * total reviews, then average them
+        let totalProviderRatingSum = 0;
+        for (const prod of providerProducts) {
+          const rating = prod.rating || 0;
+          totalProviderRatingSum += rating * totalProviderReviews;
+        }
+
+        const newProviderAverageRating =
+          totalProviderReviews > 0
+            ? totalProviderRatingSum / totalProviderReviews
+            : 0;
+
+        const provider = await this.providerModel.findById(providerId);
+        if (provider) {
+          provider.rating = newProviderAverageRating;
+          await provider.save();
+        }
+      }
+
+      // 4. Return the newly created review
+      return newReview;
+    } catch (error) {
+      console.error('Error creating review:', error);
+      throw new InternalServerErrorException('Failed to create review');
+    }
   }
 
   async findById(id: string): Promise<Review> {
@@ -49,13 +120,92 @@ export class ReviewService {
   }
 
   async update(id: string, updateReviewDto: UpdateReviewDto): Promise<Review> {
-    const updated = await this.reviewModel.findByIdAndUpdate(
-      id,
-      updateReviewDto,
-      { new: true },
-    );
-    if (!updated) throw new NotFoundException('Review not found');
-    return updated;
+    try {
+      // 1. Find the existing review
+      const existingReview = await this.reviewModel.findById(id);
+      if (!existingReview) {
+        throw new NotFoundException('Review not found');
+      }
+
+      // 2. Update the review document
+      const { rating, comment } = updateReviewDto;
+      const updatedReview = await this.reviewModel.findByIdAndUpdate(
+        id,
+        { rating, comment },
+        { new: true },
+      );
+      // This check is often redundant here since we did a findById, but kept just in case
+      if (!updatedReview) {
+        throw new NotFoundException('Review not found after update');
+      }
+
+      // 3. Recalculate the product’s average rating
+      const product = await this.productModel.findById(
+        existingReview.productId,
+      );
+      if (!product) {
+        // If product is missing, we can either throw or skip rating logic
+        throw new NotFoundException('Associated product not found');
+      }
+
+      // Gather all reviews for this product
+      const productReviews = await this.reviewModel.find({
+        productId: product._id,
+      });
+      const totalReviews = productReviews.length;
+
+      const totalRatingSum = productReviews.reduce(
+        (sum, r) => sum + (r.rating || 0),
+        0,
+      );
+      const newAverageRating =
+        totalReviews > 0 ? totalRatingSum / totalReviews : 0;
+
+      // Update and save the product with the new average
+      product.rating = newAverageRating;
+      await product.save();
+
+      // 4. Recalculate the provider’s average rating
+      const providerId = product.providerId;
+      const provider = await this.providerModel.findById(providerId);
+
+      // Skip if there's no associated provider
+      if (provider) {
+        // Fetch all products belonging to this provider
+        const providerProducts = await this.productModel.find({ providerId });
+
+        // Get all reviews across this provider’s products
+        const providerProductIds = providerProducts.map((p) => p._id);
+        const providerReviews = await this.reviewModel.find({
+          productId: { $in: providerProductIds },
+        });
+        const totalProviderReviews = providerReviews.length;
+
+        // Sum of each product’s rating * 1 (since each rating is the same “weight”)
+        // Because we already have each product rating saved individually in the DB,
+        // an alternative approach is to average the product ratings. Here, we’re
+        // using each review’s rating for accuracy.
+        const totalProviderRatingSum = providerReviews.reduce(
+          (sum, r) => sum + (r.rating || 0),
+          0,
+        );
+
+        const newProviderAverageRating =
+          totalProviderReviews > 0
+            ? totalProviderRatingSum / totalProviderReviews
+            : 0;
+
+        // Update and save the provider
+        provider.rating = newProviderAverageRating;
+        await provider.save();
+      }
+
+      // 5. Return the updated review
+      return updatedReview;
+    } catch (error) {
+      console.error('Error updating review:', error);
+      throw new InternalServerErrorException('Failed to update review');
+    }
   }
 
   async delete(id: string): Promise<string> {

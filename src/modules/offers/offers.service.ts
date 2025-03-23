@@ -1,13 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Offer, OfferDocument } from './entities/offer.entity';
 import { Model } from 'mongoose';
 // import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { OfferInput } from './dto/input-offer.dto';
+import { getStorage } from 'firebase-admin/storage';
 
 @Injectable()
 export class OfferService {
+  private readonly bucketName = process.env.BUCKET_NAME as string;
   constructor(
     @InjectModel(Offer.name) private offerModel: Model<OfferDocument>,
   ) {}
@@ -43,8 +52,42 @@ export class OfferService {
   }
 
   async delete(id: string): Promise<Offer> {
-    const deleted = await this.offerModel.findByIdAndDelete(id);
-    if (!deleted) throw new NotFoundException('Offer not found');
-    return deleted;
+    try {
+      // 1. Find the existing offer
+      const existingOffer = await this.offerModel.findById(id);
+      if (!existingOffer) {
+        throw new NotFoundException('Offer not found');
+      }
+
+      // 2. If there's an image URL, remove it from the storage bucket
+      if (existingOffer.imageUrl) {
+        // Assuming the structure of the URL includes the bucket name, e.g.:
+        // https://storage.googleapis.com/bucketName/path/to/image.jpg
+        // Adjust parsing logic to match how you store image URLs
+        const fileName = existingOffer.imageUrl.split(`${this.bucketName}/`)[1];
+        if (fileName) {
+          const bucket = getStorage().bucket(this.bucketName);
+          const file = bucket.file(fileName);
+
+          await file.delete().catch((error) => {
+            // Decide whether to handle missing files gracefully or throw
+            console.error('Failed to delete image from bucket:', error);
+          });
+        }
+      }
+
+      // 3. Delete the offer from the database
+      const deletedOffer = await this.offerModel.findByIdAndDelete(id);
+      // If the deletion somehow returns null
+      if (!deletedOffer) {
+        throw new NotFoundException('Offer not found or already deleted');
+      }
+
+      // 4. Return the deleted offer document (or whatever you prefer)
+      return deletedOffer;
+    } catch (error) {
+      console.error('Error deleting offer:', error);
+      throw new InternalServerErrorException('Failed to delete offer');
+    }
   }
 }
