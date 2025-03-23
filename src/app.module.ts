@@ -26,6 +26,7 @@ import { ConfigModule } from '@nestjs/config';
       driver: ApolloDriver,
       playground: false,
       autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
+      context: ({ req }: { req: Request }) => ({ req }),
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     UsersModule,
