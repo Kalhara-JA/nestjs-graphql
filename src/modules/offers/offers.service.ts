@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   InternalServerErrorException,
@@ -9,14 +6,15 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Offer, OfferDocument } from './entities/offer.entity';
 import { Model } from 'mongoose';
-// import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { OfferInput } from './dto/input-offer.dto';
 import { getStorage } from 'firebase-admin/storage';
+import { UploadsService } from '../uploads/uploads.service';
 
 @Injectable()
 export class OfferService {
   private readonly bucketName = process.env.BUCKET_NAME as string;
+  private readonly uploadsService = new UploadsService();
   constructor(
     @InjectModel(Offer.name) private offerModel: Model<OfferDocument>,
   ) {}
@@ -32,12 +30,28 @@ export class OfferService {
 
   async findById(id: string): Promise<Offer> {
     const offer = await this.offerModel.findById(id);
+
     if (!offer) throw new NotFoundException('Offer not found');
+    if (offer.imageUrl) {
+      offer.imageUrl = await this.uploadsService.generateSignedUrl(
+        offer.imageUrl,
+      );
+    }
     return offer;
   }
 
   async findAll(): Promise<Offer[]> {
-    return this.offerModel.find().exec();
+    const offers = await this.offerModel.find();
+
+    for (const offer of offers) {
+      if (offer.imageUrl) {
+        offer.imageUrl = await this.uploadsService.generateSignedUrl(
+          offer.imageUrl,
+        );
+      }
+    }
+
+    return offers;
   }
 
   async update(id: string, updateOfferDto: UpdateOfferDto): Promise<Offer> {

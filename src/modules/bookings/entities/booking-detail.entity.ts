@@ -8,7 +8,7 @@ import { ProductDetail } from '../../products/entities/product-detail.entity';
 
 @ObjectType()
 export class BookingDetail {
-  @Field(() => Booking)
+  @Field(() => Booking, { nullable: true })
   booking: Booking;
 
   @Field(() => User, { nullable: true })

@@ -39,8 +39,8 @@ type FavoriteProduct {
 }
 
 type UsersResponse {
-  users: [User!]!
-  totalCount: Int!
+  users: [User]
+  totalCount: Int
 }
 
 type Product {
@@ -68,11 +68,11 @@ type SubCategory {
 }
 
 type ServiceCategory {
-  id: ID!
-  title: String!
-  image: String!
-  color: String!
-  subCategories: [SubCategory!]
+  id: ID
+  title: String
+  image: String
+  color: String
+  subCategories: [SubCategory]
 }
 
 type Offer {
@@ -81,7 +81,7 @@ type Offer {
   subtitle: String
   discount: Float!
   appLink: String
-  products: [Product!]
+  products: [Product]
   categoryId: ServiceCategory!
   image: String
   imageUrl: String
@@ -161,7 +161,7 @@ type ProductDetail {
 }
 
 type BookingDetail {
-  booking: Booking!
+  booking: Booking
   user: User
   address: Address
   provider: Provider
@@ -179,83 +179,96 @@ type ProviderPreferences {
 }
 
 type ProvidersResponse {
-  providers: [Provider!]
+  providers: [Provider]
   totalCount: Int
 }
 
 type Query {
-  getUser(firebaseId: String!): User!
-  getUserById(id: ID!): User!
-  getUsers: [User!]!
-  getUsersPaginated(page: Int, pageSize: Int): UsersResponse!
-  getAddressesByUserId(userId: ID!): [Address!]!
-  getLegalDataByUserId(userId: ID!): LegalData!
-  getUserFCMTokenById(id: ID!): String!
-  getFavoriteProductsByUserId(userId: ID!): [FavoriteProduct!]!
-  getProducts: [Product!]!
-  getProduct(id: ID!): Product!
-  getProductDetail(id: ID!): ProductDetail!
-  getProductsByCategory(categoryId: ID!): [Product!]!
-  getProductsBySubCategory(subCategoryId: ID!): [Product!]!
-  getProductsByProvider(providerId: ID!): [Product!]!
+  getUser(firebaseId: String!): User
+  getUserById(id: ID!): User
+  getUsers: [User]
+  getUsersPaginated(page: Int, pageSize: Int): UsersResponse
+  getAddressesByUserId(userId: ID!): [Address]
+  getLegalDataByUserId(userId: ID!): LegalData
+  getUserFCMTokenById(id: ID!): String
+  getFavoriteProductsByUserId(userId: ID!): [FavoriteProduct]
+  getProducts: [Product]
+  getProduct(id: ID!): Product
+  getProductDetail(id: ID!): ProductDetail
+  getProductsByCategory(categoryId: ID!): [Product]
+  getProductsBySubCategory(subCategoryId: ID!): [Product]
+  getProductsByProvider(providerId: ID!): [Product]
   getDiscountedProducts(discount: Float!, categoryId: ID, subCategoryId: ID): [Product!]!
-  getProductsWithDetails: [ProductDetail!]!
-  getProviders: [Provider!]!
-  getProvider(id: ID!): Provider!
-  getProvidersPaginated(page: Int, pageSize: Int): ProvidersResponse!
-  getProviderByFirebaseId(firebaseId: String!): Provider!
-  providerExists(firebaseId: String!): Boolean!
-  getProviderPreferences(providerId: ID!): ProviderPreferences!
-  getProviderFCMTokenById(id: ID!): String!
-  getBookingById(id: ID!): Booking!
-  getBookingsByUser(userId: ID!): [Booking!]!
-  getBookingsByProvider(providerId: ID!): [Booking!]!
-  getAcceptedBookingsByProvider(providerId: ID!, date: String): [Booking!]!
-  getBookingDetail(bookingId: ID!): BookingDetail!
-  getServiceCategories: [ServiceCategory!]!
-  getServiceCategory(id: ID!): ServiceCategory!
-  getSubCategory(id: ID!): SubCategory!
-  getAllCategoriesAndSubCategories: [ServiceCategory!]!
-  getSubCategoriesByCategory(categoryId: ID!): [SubCategory!]!
-  searchCategories(searchTerm: String!): [ServiceCategory!]!
-  getReview(id: ID!): Review!
-  getReviewsByProduct(productId: ID!): [Review!]!
-  getReviewsWithDetailsByProduct(productId: ID!): [ReviewDetails!]!
-  getReviewsWithDetailsByProvider(providerId: ID!): [ReviewDetails!]!
-  getOffers: [Offer!]!
-  getOffer(id: ID!): Offer!
+  getProductsWithDetails: [ProductDetail]
+  getProviders: [Provider]
+  getProvider(id: ID!): Provider
+  getProvidersPaginated(page: Int, pageSize: Int): ProvidersResponse
+  getProviderByFirebaseId(firebaseId: String!): Provider
+  providerExists(firebaseId: String!): Boolean
+  getProviderPreferences(providerId: ID!): ProviderPreferences
+  getProviderFCMTokenById(id: ID!): String
+  getBookingById(id: ID!): Booking
+  getBookingsByUser(userId: ID!): [Booking]
+  getBookingsByProvider(providerId: ID!): [Booking]
+  getAcceptedBookingsByProvider(providerId: ID!, date: String): [Booking]
+  getBookingDetail(bookingId: ID!): BookingDetail
+  getServiceCategories: [ServiceCategory]
+  getServiceCategory(id: ID!): ServiceCategory
+  getSubCategory(id: ID!): SubCategory
+  getAllCategoriesAndSubCategories: [ServiceCategory]
+  getSubCategoriesByCategory(categoryId: ID!): [SubCategory]
+  searchCategories(searchTerm: String!): [ServiceCategory]
+  getReview(id: ID!): Review
+  getReviewsByProduct(productId: ID!): [Review]
+  getReviewsWithDetailsByProduct(productId: ID!): [ReviewDetails]
+  getReviewsWithDetailsByProvider(providerId: ID!): [ReviewDetails]
+  getOffers: [Offer]
+  getOffer(id: ID!): Offer
 }
 
 type Mutation {
-  createUser(uid: String!, firstName: String!, lastName: String!, email: String!, firebaseId: String!, phoneNumber: String!, profilePicture: String): User!
-  updateUser(id: ID!, firstName: String, lastName: String, email: String, phoneNumber: String, profilePicture: String): User!
-  updateUserFCMToken(id: ID!, fcmToken: String!): User!
-  createAddress(name: String!, address: String!, userId: ID!, latitude: String, longitude: String, additional: String): Address!
-  createLegalData(userId: ID!, personType: String!, documentType: String!, documentNumber: String!): LegalData!
-  updateLegalData(id: ID!, personType: String, documentType: String, documentNumber: String): LegalData!
-  createProduct(providerId: ID!, title: String!, image: String!, description: String, rate: Float, rating: Float, jobs: Int, discount: Float, mainCategory: ID!, subCategory: ID!, includeSupplies: Boolean!, includeTools: Boolean!): Product!
-  updateProduct(id: ID!, title: String, image: String, description: String, rate: Float, rating: Float, jobs: Int, mainCategory: String, subCategory: String, includeSupplies: Boolean, includeTools: Boolean): Product!
-  deleteProduct(id: ID!): Product!
-  addFavoriteProduct(userId: ID!, productId: ID!): FavoriteProduct!
-  removeFavoriteProduct(userId: ID!, productId: ID!): FavoriteProduct!
-  createProvider(firstName: String!, lastName: String!, email: String!, phone: String!, image: String!, firebaseId: String!): Provider!
-  updateProvider(id: ID!, firstName: String, lastName: String, email: String, phone: String, image: String): Provider!
-  deleteProvider(id: ID!): Provider!
-  setWorkingHours(providerId: ID!, startTime: String!, endTime: String!): ProviderPreferences!
-  updateProviderFCMToken(providerId: ID!, fcmToken: String!): Provider!
-  createBooking(userId: String!, providerId: String!, productId: String!, date: String!, time: String!, address: String!, hours: String, type: String): Booking!
-  updateBookingStatus(id: ID!, status: String!, notes: String): Booking!
-  updateBookingType(id: ID!, type: String!, newPrice: String!): Booking!
-  createServiceCategory(title: String!, image: String!, color: String!): ServiceCategory!
-  updateServiceCategory(id: ID!, title: String, image: String, color: String): ServiceCategory!
-  deleteServiceCategory(id: ID!): ServiceCategory!
-  createSubCategory(title: String!, image: String!, color: String!, categoryId: ID!): SubCategory!
-  updateSubCategory(id: ID!, title: String, image: String, color: String, categoryId: String): SubCategory!
-  deleteSubCategory(id: ID!): SubCategory!
-  createReview(productId: ID!, userId: ID!, categoryId: ID!, subCategoryId: ID!, bookingId: ID!, rating: Float!, comment: String!): Review!
-  updateReview(id: ID!, rating: Float, comment: String): Review!
-  deleteReview(id: ID!): String!
-  createOffer(title: String!, subtitle: String, discount: Float!, appLink: String, products: [ID!], categoryId: String!, image: String, imageUrl: String, isActive: Boolean!, expirationDate: String!): Offer!
-  updateOffer(id: ID!, title: String, subtitle: String, discount: Float, appLink: String, products: [String!], categoryId: String, image: String, imageUrl: String, isActive: Boolean, expirationDate: String): Offer!
-  deleteOffer(id: ID!): String!
+  createUser(uid: String!, firstName: String!, lastName: String!, email: String!, firebaseId: String!, phoneNumber: String!, profilePicture: String): User
+  updateUser(id: ID!, firstName: String, lastName: String, email: String, phoneNumber: String, profilePicture: String): User
+  updateUserFCMToken(id: ID!, fcmToken: String!): User
+  createAddress(name: String!, address: String!, userId: ID!, latitude: String, longitude: String, additional: String): Address
+  createLegalData(userId: ID!, personType: String!, documentType: String!, documentNumber: String!): LegalData
+  updateLegalData(id: ID!, personType: String, documentType: String, documentNumber: String): LegalData
+  createProduct(providerId: ID!, title: String!, image: String!, description: String, rate: Float, rating: Float, jobs: Int, mainCategory: ID!, subCategory: ID!, includeSupplies: Boolean, includeTools: Boolean): Product
+  updateProduct(id: ID!, title: String, image: String, description: String, rate: Float, rating: Float, jobs: Int, mainCategory: ID, subCategory: ID, includeSupplies: Boolean, includeTools: Boolean): Product
+  deleteProduct(id: ID!): Product
+  addFavoriteProduct(userId: ID!, productId: ID!): FavoriteProduct
+  removeFavoriteProduct(userId: ID!, productId: ID!): FavoriteProduct
+  createProvider(firstName: String!, lastName: String!, email: String!, phone: String!, image: String!, firebaseId: String!): Provider
+  updateProvider(id: ID!, firstName: String, lastName: String, email: String, phone: String, image: String): Provider
+  deleteProvider(id: ID!): Provider
+  setWorkingHours(providerId: ID!, startTime: String!, endTime: String!): ProviderPreferences
+  updateProviderFCMToken(providerId: ID!, fcmToken: String!): Provider
+  createBooking(userId: ID!, providerId: ID!, productId: ID!, date: ID!, time: String!, address: String!, hours: String, type: String): Booking
+  updateBookingStatus(id: ID!, status: String!, notes: String): Booking
+  updateBookingType(id: ID!, type: String!, newPrice: String!): Booking
+  createServiceCategory(title: String!, image: String!, color: String!): ServiceCategory
+  updateServiceCategory(id: ID!, title: String, image: String, color: String): ServiceCategory
+  deleteServiceCategory(id: ID!): ServiceCategory
+  createSubCategory(title: String!, image: String!, color: String!, categoryId: ID!): SubCategory
+  updateSubCategory(id: ID!, title: String, image: String, color: String, categoryId: ID): SubCategory
+  deleteSubCategory(id: ID!): SubCategory
+  createReview(productId: ID!, userId: ID!, categoryId: ID!, subCategoryId: ID!, bookingId: ID!, rating: Float!, comment: String!): Review
+  updateReview(id: ID!, rating: Int, comment: String): Review
+  deleteReview(id: ID!): String
+  createOffer(input: OfferInput!): Offer
+  updateOffer(id: ID!, input: OfferInput!): Offer
+  deleteOffer(id: ID!): String
+}
+
+input OfferInput {
+  title: String!
+  subtitle: String
+  discount: Float!
+  appLink: String
+  products: [ID]
+  categoryId: ID!
+  image: String
+  imageUrl: String
+  isActive: Boolean
+  expirationDate: String!
 }

@@ -10,19 +10,22 @@ import { ProviderPreferences } from './entities/provider-preferences.entity';
 export class ProviderResolver {
   constructor(private readonly providerService: ProviderService) {}
 
-  @Query(() => [Provider], { name: 'getProviders' })
+  @Query(() => [Provider], { name: 'getProviders', nullable: 'itemsAndList' })
   async getProviders(): Promise<Provider[]> {
     return this.providerService.findAll();
   }
 
-  @Query(() => Provider, { name: 'getProvider' })
+  @Query(() => Provider, { name: 'getProvider', nullable: true })
   async getProvider(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Provider> {
     return this.providerService.findById(id);
   }
 
-  @Query(() => ProvidersResponse, { name: 'getProvidersPaginated' })
+  @Query(() => ProvidersResponse, {
+    name: 'getProvidersPaginated',
+    nullable: true,
+  })
   async getProvidersPaginated(
     @Args('page', { type: () => Int, nullable: true }) page?: number,
     @Args('pageSize', { type: () => Int, nullable: true }) pageSize?: number,
@@ -30,40 +33,43 @@ export class ProviderResolver {
     return this.providerService.findPaginated(page, pageSize);
   }
 
-  @Query(() => Provider, { name: 'getProviderByFirebaseId' })
+  @Query(() => Provider, { name: 'getProviderByFirebaseId', nullable: true })
   async getProviderByFirebaseId(
     @Args('firebaseId', { type: () => String }) firebaseId: string,
   ): Promise<Provider> {
     return this.providerService.findByFirebaseId(firebaseId);
   }
 
-  @Query(() => Boolean, { name: 'providerExists' })
+  @Query(() => Boolean, { name: 'providerExists', nullable: true })
   async providerExists(
     @Args('firebaseId', { type: () => String }) firebaseId: string,
   ): Promise<boolean> {
     return this.providerService.exists(firebaseId);
   }
 
-  @Query(() => ProviderPreferences, { name: 'getProviderPreferences' })
+  @Query(() => ProviderPreferences, {
+    name: 'getProviderPreferences',
+    nullable: true,
+  })
   async getProviderPreferences(
     @Args('providerId', { type: () => ID }) providerId: string,
   ): Promise<ProviderPreferences> {
     return this.providerService.getProviderPreferences(providerId);
   }
 
-  @Query(() => String, { name: 'getProviderFCMTokenById' })
+  @Query(() => String, { name: 'getProviderFCMTokenById', nullable: true })
   async getProviderFCMTokenById(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<string> {
     return this.providerService.getProviderFCMTokenById(id);
   }
 
-  @Mutation(() => Provider)
+  @Mutation(() => Provider, { nullable: true })
   async createProvider(@Args() input: CreateProviderDto): Promise<Provider> {
     return this.providerService.create(input);
   }
 
-  @Mutation(() => Provider)
+  @Mutation(() => Provider, { nullable: true })
   async updateProvider(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateProviderDto,
@@ -71,14 +77,14 @@ export class ProviderResolver {
     return this.providerService.update(id, input);
   }
 
-  @Mutation(() => Provider)
+  @Mutation(() => Provider, { nullable: true })
   async deleteProvider(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Provider> {
     return this.providerService.delete(id);
   }
 
-  @Mutation(() => ProviderPreferences)
+  @Mutation(() => ProviderPreferences, { nullable: true })
   async setWorkingHours(
     @Args('providerId', { type: () => ID }) providerId: string,
     @Args('startTime', { type: () => String }) startTime: string,
@@ -87,7 +93,7 @@ export class ProviderResolver {
     return this.providerService.setWorkingHours(providerId, startTime, endTime);
   }
 
-  @Mutation(() => Provider)
+  @Mutation(() => Provider, { nullable: true })
   async updateProviderFCMToken(
     @Args('providerId', { type: () => ID }) providerId: string,
     @Args('fcmToken', { type: () => String }) fcmToken: string,

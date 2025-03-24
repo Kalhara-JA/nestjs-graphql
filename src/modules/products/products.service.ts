@@ -145,28 +145,80 @@ export class ProductService {
 
   async getProductsWithDetails(): Promise<ProductDetail[]> {
     try {
-      // Use populate to fetch the related documents
-      const products = await this.productModel
-        .find()
-        .populate('providerId', 'firstName lastName email') // Provider fields
-        .populate('mainCategory', 'title color') // Category fields
-        .populate('subCategory', 'title color'); // SubCategory fields
+      // Fetch products without populating the category fields
+      const products = await this.productModel.find();
 
-      // Map each product to a ProductDetail object
-      const details: ProductDetail[] = products.map((product) => ({
-        id: product._id as string,
-        title: product.title,
-        description: product.description,
-        rate: product.rate,
-        rating: product.rating,
-        jobs: product.jobs,
-        image: product.image,
-        provider: product.providerId as unknown as Provider, // Cast to Provider type
-        mainCategory: product.mainCategory as unknown as ServiceCategory, // Cast to ServiceCategory type
-        subCategory: product.subCategory as unknown as SubCategory, // Cast to SubCategory type
-        includeSupplies: product.includeSupplies,
-        includeTools: product.includeTools,
-      }));
+      // Extract unique provider IDs from the products.
+      const providerIds = products
+        .map((product) => product.providerId)
+        .filter((id) => id != null);
+      const uniqueProviderIds = [...new Set(providerIds.map(String))];
+
+      // Extract unique main category IDs.
+      const mainCategoryIds = products
+        .map((product) => product.mainCategory)
+        .filter((id) => id != null);
+      const uniqueMainCategoryIds = [...new Set(mainCategoryIds.map(String))];
+
+      // Extract unique sub category IDs.
+      const subCategoryIds = products
+        .map((product) => product.subCategory)
+        .filter((id) => id != null);
+      const uniqueSubCategoryIds = [...new Set(subCategoryIds.map(String))];
+
+      // Fetch provider details directly from ProviderModel.
+      const providers = await this.providerModel.find({
+        _id: { $in: uniqueProviderIds },
+      });
+      // Create a lookup map for providers.
+      const providerMap = new Map<string, Provider>();
+      providers.forEach((provider) =>
+        providerMap.set(String(provider._id), provider),
+      );
+
+      // Fetch main category details from ServiceCategoryModel.
+      const mainCategories = await this.serviceCategoryModel.find({
+        _id: { $in: uniqueMainCategoryIds },
+      });
+      // Create a lookup map for main categories.
+      const mainCategoryMap = new Map<string, ServiceCategory>();
+      mainCategories.forEach((category) =>
+        mainCategoryMap.set(String(category._id), category),
+      );
+
+      // Fetch sub category details from SubCategoryModel.
+      const subCategories = await this.subCategoryModel.find({
+        _id: { $in: uniqueSubCategoryIds },
+      });
+      // Create a lookup map for sub categories.
+      const subCategoryMap = new Map<string, SubCategory>();
+      subCategories.forEach((category) =>
+        subCategoryMap.set(String(category._id), category),
+      );
+
+      // Map each product to a ProductDetail object, joining the provider, main, and sub categories.
+      const details: ProductDetail[] = products.map((product) => {
+        const provider = providerMap.get(product.providerId.toString());
+        const mainCategory = mainCategoryMap.get(
+          product.mainCategory.toString(),
+        );
+        const subCategory = subCategoryMap.get(product.subCategory.toString());
+
+        return {
+          id: (product._id as string).toString(),
+          title: product.title,
+          description: product.description,
+          rate: product.rate,
+          rating: product.rating,
+          jobs: product.jobs,
+          image: product.image,
+          provider: provider as Provider,
+          mainCategory: mainCategory as ServiceCategory,
+          subCategory: subCategory as SubCategory,
+          includeSupplies: product.includeSupplies,
+          includeTools: product.includeTools,
+        };
+      });
 
       return details;
     } catch (error) {

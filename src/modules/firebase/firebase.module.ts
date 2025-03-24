@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Module, Global, Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import serviceAccount from '../../config/firebase/jandy-firebase-adminsdk-kalhara.json';
+import serviceAccount from '../../config/firebase/jandy-firebase-adminsdk.json';
 import { FirebaseController } from './firebase.controller';
 
 @Global()

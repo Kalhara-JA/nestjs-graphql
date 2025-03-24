@@ -1,9 +1,9 @@
-import { Field, Float, ArgsType } from '@nestjs/graphql';
+import { Field, ArgsType, Int } from '@nestjs/graphql';
 import { IsOptional, IsNumber, IsString } from 'class-validator';
 
 @ArgsType()
 export class UpdateReviewDto {
-  @Field(() => Float, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsNumber()
   rating?: number;

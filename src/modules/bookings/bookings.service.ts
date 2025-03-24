@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   Injectable,
   InternalServerErrorException,
@@ -8,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Booking, BookingDocument } from './entities/booking.entity';
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, Types } from 'mongoose';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { UpdateBookingTypeDto } from './dto/update-booking-type.dto';
@@ -93,7 +91,11 @@ export class BookingService {
   }
 
   async findByProvider(providerId: string): Promise<Booking[]> {
-    return this.bookingModel.find({ providerId }).exec();
+    if (!Types.ObjectId.isValid(providerId)) {
+      throw new Error('Invalid providerId format');
+    }
+    const objectId = new Types.ObjectId(providerId);
+    return this.bookingModel.find({ providerId: objectId }).exec();
   }
 
   async updateStatus(

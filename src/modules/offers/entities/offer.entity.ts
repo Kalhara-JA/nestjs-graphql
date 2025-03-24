@@ -29,7 +29,7 @@ export class Offer {
   appLink?: string;
 
   @Prop({ type: [String], default: [] })
-  @Field(() => [Product], { nullable: true })
+  @Field(() => [Product], { nullable: 'itemsAndList' })
   products: Product[];
 
   @Prop({ required: false })

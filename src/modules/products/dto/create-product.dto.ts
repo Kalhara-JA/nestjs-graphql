@@ -1,5 +1,5 @@
 import { Field, Float, Int, ID, ArgsType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @ArgsType()
 export class CreateProductDto {
@@ -31,10 +31,6 @@ export class CreateProductDto {
   @IsOptional()
   jobs?: number;
 
-  @Field({ nullable: true })
-  @IsOptional()
-  discount?: number;
-
   @Field(() => ID)
   @IsNotEmpty()
   mainCategory: string;
@@ -43,11 +39,11 @@ export class CreateProductDto {
   @IsNotEmpty()
   subCategory: string;
 
-  @Field()
-  @IsBoolean()
+  @Field({ nullable: true })
+  @IsOptional()
   includeSupplies: boolean;
 
-  @Field()
-  @IsBoolean()
+  @Field({ nullable: true })
+  @IsOptional()
   includeTools: boolean;
 }

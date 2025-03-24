@@ -8,7 +8,7 @@ export type ProvidersResponseDocument = ProvidersResponse & Document;
 @Schema()
 @ObjectType()
 export class ProvidersResponse {
-  @Field(() => [Provider], { nullable: true })
+  @Field(() => [Provider], { nullable: 'itemsAndList' })
   providers: Provider[];
 
   @Field(() => Int, { nullable: true })

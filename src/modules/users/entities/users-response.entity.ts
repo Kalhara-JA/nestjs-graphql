@@ -2,16 +2,17 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from './user.entity';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export type UsersResponseDocument = UsersResponse & Document;
 
 @Schema()
 @ObjectType()
 export class UsersResponse {
-  @Field(() => [User], { nullable: false })
+  @Field(() => [User], { nullable: 'itemsAndList' })
   users: User[];
 
-  @Field(() => Int, { nullable: false })
+  @Field(() => Int, { nullable: true })
   totalCount: number;
 }
 

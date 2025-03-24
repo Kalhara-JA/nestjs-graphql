@@ -12,24 +12,24 @@ import { UsersResponse } from './entities/users-response.entity';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => User, { name: 'getUser' })
+  @Query(() => User, { name: 'getUser', nullable: true })
   async getUser(
     @Args('firebaseId', { type: () => String }) firebaseId: string,
   ): Promise<User> {
     return this.userService.findByFirebaseId(firebaseId);
   }
 
-  @Query(() => User, { name: 'getUserById' })
+  @Query(() => User, { name: 'getUserById', nullable: true })
   async getUserById(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return this.userService.findById(id);
   }
 
-  @Query(() => [User], { name: 'getUsers' })
+  @Query(() => [User], { name: 'getUsers', nullable: 'itemsAndList' })
   async getUsers(): Promise<User[]> {
     return this.userService.findAll();
   }
 
-  @Query(() => UsersResponse, { name: 'getUsersPaginated' })
+  @Query(() => UsersResponse, { name: 'getUsersPaginated', nullable: true })
   async getUsersPaginated(
     @Args('page', { type: () => Int, nullable: true }) page?: number,
     @Args('pageSize', { type: () => Int, nullable: true }) pageSize?: number,
@@ -37,40 +37,46 @@ export class UserResolver {
     return this.userService.getUsersPaginated(page, pageSize);
   }
 
-  @Query(() => [Address], { name: 'getAddressesByUserId' })
+  @Query(() => [Address], {
+    name: 'getAddressesByUserId',
+    nullable: 'itemsAndList',
+  })
   async getAddressesByUserId(
     @Args('userId', { type: () => ID }) userId: string,
   ): Promise<Address[]> {
     return this.userService.getAddressesByUserId(userId);
   }
 
-  @Query(() => LegalData, { name: 'getLegalDataByUserId' })
+  @Query(() => LegalData, { name: 'getLegalDataByUserId', nullable: true })
   async getLegalDataByUserId(
     @Args('userId', { type: () => ID }) userId: string,
   ): Promise<LegalData> {
     return this.userService.getLegalDataByUserId(userId);
   }
 
-  @Query(() => String, { name: 'getUserFCMTokenById' })
+  @Query(() => String, { name: 'getUserFCMTokenById', nullable: true })
   async getUserFCMTokenById(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<string> {
     return this.userService.getUserFCMTokenById(id);
   }
 
-  @Query(() => [FavoriteProduct], { name: 'getFavoriteProductsByUserId' })
+  @Query(() => [FavoriteProduct], {
+    name: 'getFavoriteProductsByUserId',
+    nullable: 'itemsAndList',
+  })
   async getFavoriteProductsByUserId(
     @Args('userId', { type: () => ID }) userId: string,
   ): Promise<FavoriteProduct[]> {
     return this.userService.getFavoriteProductsByUserId(userId);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { name: 'createUser', nullable: true })
   async createUser(@Args() createUserData: CreateUserDto): Promise<User> {
     return this.userService.create(createUserData);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { name: 'updateUser', nullable: true })
   async updateUser(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateUserDto,
@@ -78,7 +84,7 @@ export class UserResolver {
     return this.userService.update(id, input);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { nullable: true })
   async updateUserFCMToken(
     @Args('id', { type: () => ID }) id: string,
     @Args('fcmToken', { type: () => String }) fcmToken: string,
@@ -86,7 +92,7 @@ export class UserResolver {
     return this.userService.updateUserFCMToken(id, fcmToken);
   }
 
-  @Mutation(() => Address)
+  @Mutation(() => Address, { nullable: true })
   async createAddress(
     @Args('name', { type: () => String }) name: string,
     @Args('address', { type: () => String }) address: string,
@@ -107,7 +113,7 @@ export class UserResolver {
     });
   }
 
-  @Mutation(() => LegalData)
+  @Mutation(() => LegalData, { nullable: true })
   async createLegalData(
     @Args('userId', { type: () => ID }) userId: string,
     @Args('personType', { type: () => String }) personType: string,
@@ -122,7 +128,7 @@ export class UserResolver {
     });
   }
 
-  @Mutation(() => LegalData)
+  @Mutation(() => LegalData, { nullable: true })
   async updateLegalData(
     @Args('id', { type: () => ID }) id: string,
     @Args('personType', { type: () => String, nullable: true })

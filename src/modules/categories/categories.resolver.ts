@@ -12,38 +12,44 @@ export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
 
   // ServiceCategory queries/mutations
-  @Query(() => [ServiceCategory], { name: 'getServiceCategories' })
+  @Query(() => [ServiceCategory], {
+    name: 'getServiceCategories',
+    nullable: 'itemsAndList',
+  })
   async getServiceCategories(): Promise<ServiceCategory[]> {
     return this.categoryService.findAllCategories();
   }
 
-  @Query(() => ServiceCategory, { name: 'getServiceCategory' })
+  @Query(() => ServiceCategory, { name: 'getServiceCategory', nullable: true })
   async getServiceCategory(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<ServiceCategory> {
     return this.categoryService.findCategoryById(id);
   }
 
-  @Query(() => SubCategory, { name: 'getSubCategory' })
+  @Query(() => SubCategory, { name: 'getSubCategory', nullable: true })
   async getSubCategory(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<SubCategory> {
     return this.categoryService.findSubCategoryById(id);
   }
 
-  @Query(() => [ServiceCategory], { name: 'getAllCategoriesAndSubCategories' })
+  @Query(() => [ServiceCategory], {
+    name: 'getAllCategoriesAndSubCategories',
+    nullable: 'itemsAndList',
+  })
   async getAllCategoriesAndSubCategories(): Promise<ServiceCategory[]> {
     return this.categoryService.findAllCategoriesAndSubCategories();
   }
 
-  @Mutation(() => ServiceCategory)
+  @Mutation(() => ServiceCategory, { nullable: true })
   async createServiceCategory(
     @Args() input: CreateServiceCategoryDto,
   ): Promise<ServiceCategory> {
     return this.categoryService.createCategory(input);
   }
 
-  @Mutation(() => ServiceCategory)
+  @Mutation(() => ServiceCategory, { nullable: true })
   async updateServiceCategory(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateServiceCategoryDto,
@@ -51,7 +57,7 @@ export class CategoryResolver {
     return this.categoryService.updateCategory(id, input);
   }
 
-  @Mutation(() => ServiceCategory)
+  @Mutation(() => ServiceCategory, { nullable: true })
   async deleteServiceCategory(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<ServiceCategory> {
@@ -59,28 +65,34 @@ export class CategoryResolver {
   }
 
   // SubCategory queries/mutations
-  @Query(() => [SubCategory], { name: 'getSubCategoriesByCategory' })
+  @Query(() => [SubCategory], {
+    name: 'getSubCategoriesByCategory',
+    nullable: 'itemsAndList',
+  })
   async getSubCategoriesByCategory(
     @Args('categoryId', { type: () => ID }) categoryId: string,
   ): Promise<SubCategory[]> {
     return this.categoryService.findSubCategoriesByCategory(categoryId);
   }
 
-  @Query(() => [ServiceCategory], { name: 'searchCategories' })
+  @Query(() => [ServiceCategory], {
+    name: 'searchCategories',
+    nullable: 'itemsAndList',
+  })
   async searchCategories(
     @Args('searchTerm', { type: () => String }) searchTerm: string,
   ): Promise<ServiceCategory[]> {
     return this.categoryService.searchCategories(searchTerm);
   }
 
-  @Mutation(() => SubCategory)
+  @Mutation(() => SubCategory, { nullable: true })
   async createSubCategory(
     @Args() input: CreateSubCategoryDto,
   ): Promise<SubCategory> {
     return this.categoryService.createSubCategory(input);
   }
 
-  @Mutation(() => SubCategory)
+  @Mutation(() => SubCategory, { nullable: true })
   async updateSubCategory(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateSubCategoryDto,
@@ -88,7 +100,7 @@ export class CategoryResolver {
     return this.categoryService.updateSubCategory(id, input);
   }
 
-  @Mutation(() => SubCategory)
+  @Mutation(() => SubCategory, { nullable: true })
   async deleteSubCategory(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<SubCategory> {

@@ -10,40 +10,49 @@ import { FavoriteProduct } from './entities/favourite-product.entity';
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
-  @Query(() => [Product], { name: 'getProducts' })
+  @Query(() => [Product], { name: 'getProducts', nullable: 'itemsAndList' })
   async getProducts(): Promise<Product[]> {
     return this.productService.findAll();
   }
 
-  @Query(() => Product, { name: 'getProduct' })
+  @Query(() => Product, { name: 'getProduct', nullable: true })
   async getProduct(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Product> {
     return this.productService.findById(id);
   }
 
-  @Query(() => ProductDetail, { name: 'getProductDetail' })
+  @Query(() => ProductDetail, { name: 'getProductDetail', nullable: true })
   async getProductDetail(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<ProductDetail> {
     return this.productService.getProductDetail(id);
   }
 
-  @Query(() => [Product], { name: 'getProductsByCategory' })
+  @Query(() => [Product], {
+    name: 'getProductsByCategory',
+    nullable: 'itemsAndList',
+  })
   async getProductsByCategory(
     @Args('categoryId', { type: () => ID }) categoryId: string,
   ): Promise<Product[]> {
     return this.productService.findByCategory(categoryId);
   }
 
-  @Query(() => [Product], { name: 'getProductsBySubCategory' })
+  @Query(() => [Product], {
+    name: 'getProductsBySubCategory',
+    nullable: 'itemsAndList',
+  })
   async getProductsBySubCategory(
     @Args('subCategoryId', { type: () => ID }) subCategoryId: string,
   ): Promise<Product[]> {
     return this.productService.findBySubCategory(subCategoryId);
   }
 
-  @Query(() => [Product], { name: 'getProductsByProvider' })
+  @Query(() => [Product], {
+    name: 'getProductsByProvider',
+    nullable: 'itemsAndList',
+  })
   async getProductsByProvider(
     @Args('providerId', { type: () => ID }) providerId: string,
   ): Promise<Product[]> {
@@ -64,17 +73,20 @@ export class ProductResolver {
     );
   }
 
-  @Query(() => [ProductDetail], { name: 'getProductsWithDetails' })
+  @Query(() => [ProductDetail], {
+    name: 'getProductsWithDetails',
+    nullable: 'itemsAndList',
+  })
   async getProductsWithDetails(): Promise<ProductDetail[]> {
     return this.productService.getProductsWithDetails();
   }
 
-  @Mutation(() => Product)
+  @Mutation(() => Product, { nullable: true })
   async createProduct(@Args() input: CreateProductDto): Promise<Product> {
     return this.productService.create(input);
   }
 
-  @Mutation(() => Product)
+  @Mutation(() => Product, { nullable: true })
   async updateProduct(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateProductDto,
@@ -82,14 +94,14 @@ export class ProductResolver {
     return this.productService.update(id, input);
   }
 
-  @Mutation(() => Product)
+  @Mutation(() => Product, { nullable: true })
   async deleteProduct(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Product> {
     return this.productService.delete(id);
   }
 
-  @Mutation(() => FavoriteProduct)
+  @Mutation(() => FavoriteProduct, { nullable: true })
   async addFavoriteProduct(
     @Args('userId', { type: () => ID }) userId: string,
     @Args('productId', { type: () => ID }) productId: string,
@@ -97,7 +109,7 @@ export class ProductResolver {
     return this.productService.addFavoriteProduct(userId, productId);
   }
 
-  @Mutation(() => FavoriteProduct)
+  @Mutation(() => FavoriteProduct, { nullable: true })
   async removeFavoriteProduct(
     @Args('userId', { type: () => ID }) userId: string,
     @Args('productId', { type: () => ID }) productId: string,

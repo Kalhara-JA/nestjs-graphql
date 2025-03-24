@@ -1,4 +1,4 @@
-import { Field, ArgsType } from '@nestjs/graphql';
+import { Field, ArgsType, ID } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 @ArgsType()
@@ -15,7 +15,7 @@ export class UpdateSubCategoryDto {
   @IsOptional()
   color?: string;
 
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   categoryId?: string;
 }

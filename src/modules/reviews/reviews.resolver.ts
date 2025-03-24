@@ -9,19 +9,25 @@ import { ReviewDetails } from './entities/review-details.entity';
 export class ReviewResolver {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Query(() => Review, { name: 'getReview' })
+  @Query(() => Review, { name: 'getReview', nullable: true })
   async getReview(@Args('id', { type: () => ID }) id: string): Promise<Review> {
     return this.reviewService.findById(id);
   }
 
-  @Query(() => [Review], { name: 'getReviewsByProduct' })
+  @Query(() => [Review], {
+    name: 'getReviewsByProduct',
+    nullable: 'itemsAndList',
+  })
   async getReviewsByProduct(
     @Args('productId', { type: () => ID }) productId: string,
   ): Promise<Review[]> {
     return this.reviewService.findByProduct(productId);
   }
 
-  @Query(() => [ReviewDetails], { name: 'getReviewsWithDetailsByProduct' })
+  @Query(() => [ReviewDetails], {
+    name: 'getReviewsWithDetailsByProduct',
+    nullable: 'itemsAndList',
+  })
   async getReviewsWithDetailsByProduct(
     @Args('productId', { type: () => ID }) productId: string,
   ): Promise<ReviewDetails[]> {
@@ -29,19 +35,22 @@ export class ReviewResolver {
   }
 
   // New Query: Reviews with detailed info for a given provider
-  @Query(() => [ReviewDetails], { name: 'getReviewsWithDetailsByProvider' })
+  @Query(() => [ReviewDetails], {
+    name: 'getReviewsWithDetailsByProvider',
+    nullable: 'itemsAndList',
+  })
   async getReviewsWithDetailsByProvider(
     @Args('providerId', { type: () => ID }) providerId: string,
   ): Promise<ReviewDetails[]> {
     return this.reviewService.getReviewsWithDetailsByProvider(providerId);
   }
 
-  @Mutation(() => Review)
+  @Mutation(() => Review, { nullable: true })
   async createReview(@Args() input: CreateReviewDto): Promise<Review> {
     return this.reviewService.create(input);
   }
 
-  @Mutation(() => Review)
+  @Mutation(() => Review, { nullable: true })
   async updateReview(
     @Args('id', { type: () => ID }) id: string,
     @Args() input: UpdateReviewDto,
@@ -49,7 +58,7 @@ export class ReviewResolver {
     return this.reviewService.update(id, input);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => String, { nullable: true })
   async deleteReview(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<string> {

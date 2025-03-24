@@ -1,4 +1,4 @@
-import { Field, Float, Int, ArgsType } from '@nestjs/graphql';
+import { Field, Float, Int, ArgsType, ID } from '@nestjs/graphql';
 import { IsOptional, IsBoolean } from 'class-validator';
 
 @ArgsType()
@@ -27,11 +27,11 @@ export class UpdateProductDto {
   @IsOptional()
   jobs?: number;
 
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   mainCategory?: string;
 
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   subCategory?: string;
 

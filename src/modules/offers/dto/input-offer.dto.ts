@@ -1,7 +1,6 @@
-import { InputType, Field, Float, ID, ArgsType } from '@nestjs/graphql';
+import { InputType, Field, Float, ID } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsBoolean, IsArray } from 'class-validator';
 
-@ArgsType()
 @InputType()
 export class OfferInput {
   @Field()
@@ -20,12 +19,12 @@ export class OfferInput {
   @IsOptional()
   appLink?: string;
 
-  @Field(() => [ID], { nullable: true })
+  @Field(() => [ID], { nullable: 'itemsAndList' })
   @IsOptional()
   @IsArray()
   products?: string[];
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   categoryId: string;
 
@@ -37,7 +36,7 @@ export class OfferInput {
   @IsOptional()
   imageUrl?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsBoolean()
   isActive: boolean;
 

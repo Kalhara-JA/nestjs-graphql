@@ -8,22 +8,22 @@ export type ServiceCategoryDocument = ServiceCategory & Document;
 @Schema()
 @ObjectType()
 export class ServiceCategory {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: string;
 
-  @Prop({ required: true })
-  @Field()
+  @Prop()
+  @Field({ nullable: true })
   title: string;
 
-  @Prop({ required: true })
-  @Field()
+  @Prop()
+  @Field({ nullable: true })
   image: string;
 
-  @Prop({ required: true })
-  @Field()
+  @Prop()
+  @Field({ nullable: true })
   color: string;
 
-  @Field(() => [SubCategory], { nullable: true })
+  @Field(() => [SubCategory], { nullable: 'itemsAndList' })
   subCategories: SubCategory[];
 }
 

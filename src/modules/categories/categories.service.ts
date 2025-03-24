@@ -87,6 +87,11 @@ export class CategoryService {
           title: new RegExp(searchTerm, 'i'),
         })
         .exec();
+
+      categories.forEach((category) => {
+        category.id = category._id;
+      });
+
       return categories;
     } catch (error) {
       console.error('Error searching categories:', error);
@@ -109,6 +114,29 @@ export class CategoryService {
 
   // New service method: Get all categories with their subCategories
   async findAllCategoriesAndSubCategories(): Promise<ServiceCategory[]> {
-    return this.categoryModel.find().populate('subCategories').exec();
+    const categories = await this.categoryModel.find().exec();
+
+    // Populate each category with its subCategories
+    const categoriesWithSubCategories = await Promise.all(
+      categories.map(async (category) => {
+        const subCategories = await this.subCategoryModel
+          .find({ categoryId: category._id })
+          .exec();
+        return {
+          ...category.toObject(),
+          subCategories,
+        };
+      }),
+    );
+
+    // Assign the ID field to each category and subCategory
+    categoriesWithSubCategories.forEach((category) => {
+      category.id = category._id;
+      category.subCategories.forEach((subCategory) => {
+        subCategory.id = subCategory._id;
+      });
+    });
+
+    return categoriesWithSubCategories;
   }
 }
