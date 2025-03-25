@@ -81,8 +81,6 @@ export class ProviderService {
     providerId: string,
   ): Promise<ProviderPreferences> {
     const providerIdObj = new Types.ObjectId(providerId);
-    const preferneces = await this.providerPreferencesModel.find();
-    console.log(preferneces);
     const preferences = await this.providerPreferencesModel.findOne({
       providerId: providerIdObj,
     });

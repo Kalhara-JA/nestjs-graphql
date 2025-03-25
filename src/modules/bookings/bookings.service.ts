@@ -281,7 +281,6 @@ export class BookingService {
       this.providerModel.findById(booking.providerId),
       this.productModel.findById(booking.productId),
     ]);
-    console.log('product', product);
 
     // Explicitly type productDetail as ProductDetail | undefined
     let productDetail: ProductDetail | undefined = undefined;
