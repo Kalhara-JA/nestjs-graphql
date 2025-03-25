@@ -1,4 +1,5 @@
 import { Field, Float, ArgsType } from '@nestjs/graphql';
+import { Prop } from '@nestjs/mongoose';
 import { IsNotEmpty, IsOptional, IsBoolean, IsArray } from 'class-validator';
 
 @ArgsType()
@@ -40,7 +41,8 @@ export class CreateOfferDto {
   @IsBoolean()
   isActive: boolean;
 
-  @Field()
+  @Prop({ type: Date })
+  @Field(() => String)
   @IsNotEmpty()
-  expirationDate: string;
+  expirationDate: Date;
 }

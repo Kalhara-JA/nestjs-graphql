@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review, ReviewDocument } from './entities/review.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewDetails } from './entities/review-details.entity';
@@ -116,7 +116,8 @@ export class ReviewService {
   }
 
   async findByProduct(productId: string): Promise<Review[]> {
-    return this.reviewModel.find({ productId }).exec();
+    const productIdObj = new Types.ObjectId(productId);
+    return this.reviewModel.find({ productId: productIdObj }).exec();
   }
 
   async update(id: string, updateReviewDto: UpdateReviewDto): Promise<Review> {
@@ -218,7 +219,10 @@ export class ReviewService {
   async getReviewsWithDetailsByProduct(
     productId: string,
   ): Promise<ReviewDetails[]> {
-    const reviews = await this.reviewModel.find({ productId }).exec();
+    const productIdObj = new Types.ObjectId(productId);
+    const reviews = await this.reviewModel
+      .find({ productId: productIdObj })
+      .exec();
 
     const detailedReviews: ReviewDetails[] = await Promise.all(
       reviews.map(async (review) => {
@@ -255,8 +259,9 @@ export class ReviewService {
     providerId: string,
   ): Promise<ReviewDetails[]> {
     // First, find all products for this provider.
+    const providerIdObj = new Types.ObjectId(providerId);
     const providerProducts = await this.productModel
-      .find({ providerId })
+      .find({ providerId: providerIdObj })
       .exec();
     const servicesCount = providerProducts.length;
     if (servicesCount === 0) {

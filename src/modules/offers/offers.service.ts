@@ -29,7 +29,7 @@ export class OfferService {
   }
 
   async findById(id: string): Promise<Offer> {
-    const offer = await this.offerModel.findById(id);
+    const offer = await this.offerModel.findById(id).populate('categoryId');
 
     if (!offer) throw new NotFoundException('Offer not found');
     if (offer.imageUrl) {
@@ -41,7 +41,10 @@ export class OfferService {
   }
 
   async findAll(): Promise<Offer[]> {
-    const offers = await this.offerModel.find();
+    const offers = await this.offerModel
+      .find()
+      .populate('products')
+      .populate('categoryId');
 
     for (const offer of offers) {
       if (offer.imageUrl) {

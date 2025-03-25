@@ -1,5 +1,5 @@
 import { Field, Float, ID, ArgsType } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @ArgsType()
 export class CreateReviewDto {
@@ -28,8 +28,8 @@ export class CreateReviewDto {
   @IsNumber()
   rating: number;
 
-  @Field()
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
   @IsString()
+  @IsOptional()
   comment: string;
 }

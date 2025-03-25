@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   ServiceCategory,
   ServiceCategoryDocument,
@@ -76,26 +76,39 @@ export class CategoryService {
   async findSubCategoriesByCategory(
     categoryId: string,
   ): Promise<SubCategory[]> {
-    return this.subCategoryModel.find({ categoryId }).exec();
+    const categoryIdObj = new Types.ObjectId(categoryId);
+    return this.subCategoryModel.find({ categoryId: categoryIdObj }).exec();
   }
 
-  async searchCategories(searchTerm: string): Promise<ServiceCategory[]> {
+  async searchCategories(
+    searchTerm: string,
+  ): Promise<(ServiceCategory | SubCategory)[]> {
     try {
-      // Search for categories where the title matches the search term (case-insensitive)
+      // Search for ServiceCategories where the title matches the search term (case-insensitive)
       const categories = await this.categoryModel
-        .find({
-          title: new RegExp(searchTerm, 'i'),
-        })
+        .find({ title: new RegExp(searchTerm, 'i') })
         .exec();
 
+      // Search for SubCategories where the title matches the search term (case-insensitive)
+      const subCategories = await this.subCategoryModel
+        .find({ title: new RegExp(searchTerm, 'i') })
+        .exec();
+
+      // Update the id field for ServiceCategories
       categories.forEach((category) => {
         category.id = category._id;
       });
 
-      return categories;
+      // Update the id field for SubCategories
+      subCategories.forEach((subCategory) => {
+        subCategory.id = subCategory._id;
+      });
+
+      // Return the combined results
+      return [...categories, ...subCategories];
     } catch (error) {
-      console.error('Error searching categories:', error);
-      throw new Error('Failed to search categories');
+      console.error('Error searching categories and subcategories:', error);
+      throw new Error('Failed to search categories and subcategories');
     }
   }
 

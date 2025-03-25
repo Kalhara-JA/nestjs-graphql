@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
 import { Product } from 'src/modules/products/entities/product.entity';
 import { ServiceCategory } from 'src/modules/categories/entities/service-category.entity';
@@ -28,11 +28,11 @@ export class Offer {
   @Field({ nullable: true })
   appLink?: string;
 
-  @Prop({ type: [String], default: [] })
+  @Prop({ type: Types.ObjectId, ref: 'Product' })
   @Field(() => [Product], { nullable: 'itemsAndList' })
   products: Product[];
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Types.ObjectId, ref: 'ServiceCategory' })
   @Field(() => ServiceCategory)
   categoryId: ServiceCategory;
 
@@ -48,17 +48,17 @@ export class Offer {
   @Field()
   isActive: boolean;
 
-  @Prop({ required: true, default: () => new Date().toISOString() })
-  @Field()
-  creationDate: string;
+  @Prop({ required: true, default: () => new Date().toISOString(), type: Date })
+  @Field(() => String)
+  creationDate: Date;
 
-  @Prop({ required: true, default: () => new Date().toISOString() })
-  @Field()
-  updateDate: string;
+  @Prop({ required: true, default: () => new Date().toISOString(), type: Date })
+  @Field(() => String)
+  updateDate: Date;
 
-  @Prop({ required: true })
-  @Field()
-  expirationDate: string;
+  @Prop({ required: true, type: Date })
+  @Field(() => String)
+  expirationDate: Date;
 }
 
 export const OfferSchema = SchemaFactory.createForClass(Offer);

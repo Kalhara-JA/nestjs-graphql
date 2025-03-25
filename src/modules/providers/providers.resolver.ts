@@ -96,7 +96,7 @@ export class ProviderResolver {
   @Mutation(() => Provider, { nullable: true })
   async updateProviderFCMToken(
     @Args('providerId', { type: () => ID }) providerId: string,
-    @Args('fcmToken', { type: () => String }) fcmToken: string,
+    @Args('fcmToken', { type: () => String, nullable: true }) fcmToken: string,
   ): Promise<Provider> {
     return this.providerService.updateProviderFCMToken(providerId, fcmToken);
   }

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 
 export type BookingDocument = Booking & Document;
@@ -10,21 +10,21 @@ export class Booking {
   @Field(() => ID)
   id: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   @Field(() => ID)
   userId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Provider' })
   @Field(() => ID)
   providerId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Product' })
   @Field(() => ID)
   productId: string;
 
-  @Prop({ required: true })
-  @Field()
-  date: string;
+  @Prop({ required: true, type: Date })
+  @Field(() => String)
+  date: Date;
 
   @Prop({ required: true })
   @Field()

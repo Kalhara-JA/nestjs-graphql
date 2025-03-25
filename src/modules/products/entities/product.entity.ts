@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, ObjectType, ID, Float, Int } from '@nestjs/graphql';
 
 export type ProductDocument = Product & Document;
@@ -10,7 +10,7 @@ export class Product {
   @Field(() => ID)
   id: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Provider' })
   @Field(() => ID)
   providerId: string;
 
@@ -42,11 +42,11 @@ export class Product {
   @Field(() => Int, { nullable: true })
   discount?: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'ServiceCategory' })
   @Field(() => ID)
   mainCategory: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'SubCategory' })
   @Field(() => ID)
   subCategory: string;
 

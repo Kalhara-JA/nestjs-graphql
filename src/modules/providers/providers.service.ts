@@ -80,8 +80,11 @@ export class ProviderService {
   async getProviderPreferences(
     providerId: string,
   ): Promise<ProviderPreferences> {
+    const providerIdObj = new Types.ObjectId(providerId);
+    const preferneces = await this.providerPreferencesModel.find();
+    console.log(preferneces);
     const preferences = await this.providerPreferencesModel.findOne({
-      providerId,
+      providerId: providerIdObj,
     });
     if (!preferences)
       throw new NotFoundException('Provider preferences not found');

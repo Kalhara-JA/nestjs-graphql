@@ -87,7 +87,13 @@ export class BookingService {
   }
 
   async findByUser(userId: string): Promise<Booking[]> {
-    return this.bookingModel.find({ userId }).exec();
+    // Convert userId to an ObjectId if it’s a valid 24-character hex string
+    const convertedUserId = Types.ObjectId.isValid(userId)
+      ? new Types.ObjectId(userId)
+      : userId;
+
+    const bookings = await this.bookingModel.find({ userId: convertedUserId });
+    return bookings;
   }
 
   async findByProvider(providerId: string): Promise<Booking[]> {
@@ -246,7 +252,7 @@ export class BookingService {
     date?: string,
   ): Promise<Booking[]> {
     const query: FilterQuery<BookingDocument> = {
-      providerId,
+      providerId: new Types.ObjectId(providerId),
       status: 'confirmed',
     };
     if (date) {
@@ -275,6 +281,7 @@ export class BookingService {
       this.providerModel.findById(booking.providerId),
       this.productModel.findById(booking.productId),
     ]);
+    console.log('product', product);
 
     // Explicitly type productDetail as ProductDetail | undefined
     let productDetail: ProductDetail | undefined = undefined;
@@ -290,7 +297,15 @@ export class BookingService {
       }
 
       productDetail = {
-        ...product.toObject(),
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        image: product.image,
+        includeSupplies: product.includeSupplies,
+        includeTools: product.includeTools,
+        rate: product.rate,
+        rating: product.rating,
+        jobs: product.jobs,
         mainCategory: mainCategory,
         subCategory: subCategory,
         provider: productProvider,

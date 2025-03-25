@@ -60,10 +60,10 @@ type Product {
 }
 
 type SubCategory {
-  id: ID!
-  title: String!
-  image: String!
-  color: String!
+  id: ID
+  title: String
+  image: String
+  color: String
   categoryId: ID!
 }
 
@@ -120,13 +120,18 @@ type ReviewDetails {
   id: ID!
   rating: Int!
   comment: String
-  date: String!
+  date: DateTime!
   user: User!
   category: String!
   subCategory: String!
   provider: Provider!
   servicesCount: Int!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Booking {
   id: ID!
@@ -146,10 +151,10 @@ type Booking {
 }
 
 type ProductDetail {
-  id: ID!
+  id: ID
   provider: Provider
-  title: String!
-  image: String!
+  title: String
+  image: String
   description: String
   rate: Float
   rating: Float
@@ -217,7 +222,7 @@ type Query {
   getSubCategory(id: ID!): SubCategory
   getAllCategoriesAndSubCategories: [ServiceCategory]
   getSubCategoriesByCategory(categoryId: ID!): [SubCategory]
-  searchCategories(searchTerm: String!): [ServiceCategory]
+  searchCategories(searchTerm: String!): [CategoryUnion]
   getReview(id: ID!): Review
   getReviewsByProduct(productId: ID!): [Review]
   getReviewsWithDetailsByProduct(productId: ID!): [ReviewDetails]
@@ -225,6 +230,8 @@ type Query {
   getOffers: [Offer]
   getOffer(id: ID!): Offer
 }
+
+union CategoryUnion = ServiceCategory | SubCategory
 
 type Mutation {
   createUser(uid: String!, firstName: String!, lastName: String!, email: String!, firebaseId: String!, phoneNumber: String!, profilePicture: String): User
@@ -242,8 +249,8 @@ type Mutation {
   updateProvider(id: ID!, firstName: String, lastName: String, email: String, phone: String, image: String): Provider
   deleteProvider(id: ID!): Provider
   setWorkingHours(providerId: ID!, startTime: String!, endTime: String!): ProviderPreferences
-  updateProviderFCMToken(providerId: ID!, fcmToken: String!): Provider
-  createBooking(userId: ID!, providerId: ID!, productId: ID!, date: ID!, time: String!, address: String!, hours: String, type: String): Booking
+  updateProviderFCMToken(providerId: ID!, fcmToken: String): Provider
+  createBooking(userId: ID!, providerId: ID!, productId: ID!, date: String!, time: String!, address: String!, hours: String, type: String): Booking
   updateBookingStatus(id: ID!, status: String!, notes: String): Booking
   updateBookingType(id: ID!, type: String!, newPrice: String!): Booking
   createServiceCategory(title: String!, image: String!, color: String!): ServiceCategory
@@ -252,7 +259,7 @@ type Mutation {
   createSubCategory(title: String!, image: String!, color: String!, categoryId: ID!): SubCategory
   updateSubCategory(id: ID!, title: String, image: String, color: String, categoryId: ID): SubCategory
   deleteSubCategory(id: ID!): SubCategory
-  createReview(productId: ID!, userId: ID!, categoryId: ID!, subCategoryId: ID!, bookingId: ID!, rating: Float!, comment: String!): Review
+  createReview(productId: ID!, userId: ID!, categoryId: ID!, subCategoryId: ID!, bookingId: ID!, rating: Float!, comment: String): Review
   updateReview(id: ID!, rating: Int, comment: String): Review
   deleteReview(id: ID!): String
   createOffer(input: OfferInput!): Offer

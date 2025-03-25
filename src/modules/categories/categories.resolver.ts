@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  createUnionType,
+} from '@nestjs/graphql';
 import { CategoryService } from './categories.service';
 import { ServiceCategory } from './entities/service-category.entity';
 import { SubCategory } from './entities/sub-category.entity';
@@ -6,6 +13,18 @@ import { CreateServiceCategoryDto } from './dto/create-service-category.dto';
 import { UpdateServiceCategoryDto } from './dto/update-service-category.dto';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
 import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
+
+export const CategoryUnion = createUnionType({
+  name: 'CategoryUnion',
+  types: () => [ServiceCategory, SubCategory] as const,
+  resolveType(value: ServiceCategory | SubCategory) {
+    // If the object has a 'categoryId' property, treat it as a SubCategory.
+    if ('categoryId' in value && value.categoryId !== undefined) {
+      return SubCategory;
+    }
+    return ServiceCategory;
+  },
+});
 
 @Resolver()
 export class CategoryResolver {
@@ -75,13 +94,13 @@ export class CategoryResolver {
     return this.categoryService.findSubCategoriesByCategory(categoryId);
   }
 
-  @Query(() => [ServiceCategory], {
+  @Query(() => [CategoryUnion], {
     name: 'searchCategories',
     nullable: 'itemsAndList',
   })
   async searchCategories(
     @Args('searchTerm', { type: () => String }) searchTerm: string,
-  ): Promise<ServiceCategory[]> {
+  ): Promise<(ServiceCategory | SubCategory)[]> {
     return this.categoryService.searchCategories(searchTerm);
   }
 

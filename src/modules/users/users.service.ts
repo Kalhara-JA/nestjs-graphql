@@ -58,11 +58,23 @@ export class UserService {
   }
 
   async getAddressesByUserId(userId: string): Promise<Address[]> {
-    return this.addressModel.find({ userId }).exec();
+    if (!Types.ObjectId.isValid(userId)) {
+      throw new NotFoundException('User not found');
+    }
+
+    const userIdObj = new Types.ObjectId(userId);
+    return this.addressModel.find({ userId: userIdObj }).exec();
   }
 
   async getLegalDataByUserId(userId: string): Promise<LegalData> {
-    const legalData = await this.legalDataModel.findOne({ userId }).exec();
+    if (!Types.ObjectId.isValid(userId)) {
+      throw new NotFoundException('User not found');
+    }
+
+    const userIdObj = new Types.ObjectId(userId);
+    const legalData = await this.legalDataModel
+      .findOne({ userId: userIdObj })
+      .exec();
     if (!legalData) throw new NotFoundException('Legal Data not found');
     return legalData;
   }
@@ -70,7 +82,12 @@ export class UserService {
   async getFavoriteProductsByUserId(
     userId: string,
   ): Promise<FavoriteProduct[]> {
-    return this.favoriteProductModel.find({ userId }).exec();
+    if (!Types.ObjectId.isValid(userId)) {
+      throw new NotFoundException('User not found');
+    }
+
+    const userIdObj = new Types.ObjectId(userId);
+    return this.favoriteProductModel.find({ userId: userIdObj }).exec();
   }
 
   async createAddress(createAddressDto: {
@@ -129,8 +146,12 @@ export class UserService {
 
   async getUserFCMTokenById(id: string): Promise<string> {
     // Check if the provided id is a valid ObjectId.
-    if (Types.ObjectId.isValid(id)) {
-      const user = await this.userModel.findById(id).select('fcmToken').exec();
+    const userIdObj = new Types.ObjectId(id);
+    if (Types.ObjectId.isValid(userIdObj)) {
+      const user = await this.userModel
+        .findById(userIdObj)
+        .select('fcmToken')
+        .exec();
       if (user) {
         if (!user.fcmToken) {
           throw new NotFoundException('FCM Token not found');

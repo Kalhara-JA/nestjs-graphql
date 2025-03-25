@@ -1,4 +1,5 @@
 import { Field, ArgsType, ID } from '@nestjs/graphql';
+import { Prop } from '@nestjs/mongoose';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @ArgsType()
@@ -15,9 +16,10 @@ export class CreateBookingDto {
   @IsNotEmpty()
   productId: string;
 
-  @Field(() => ID)
+  @Prop({ type: Date })
+  @Field(() => String)
   @IsNotEmpty()
-  date: string;
+  date: Date;
 
   @Field()
   @IsNotEmpty()

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './entities/product.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductDetail } from './entities/product-detail.entity';
@@ -108,11 +108,13 @@ export class ProductService {
   }
 
   async findBySubCategory(subCategoryId: string): Promise<Product[]> {
-    return this.productModel.find({ subCategory: subCategoryId }).exec();
+    const subCategoryIdObj = new Types.ObjectId(subCategoryId);
+    return this.productModel.find({ subCategory: subCategoryIdObj }).exec();
   }
 
   async findByProvider(providerId: string): Promise<Product[]> {
-    return this.productModel.find({ providerId: providerId }).exec();
+    const providerIdObj = new Types.ObjectId(providerId);
+    return this.productModel.find({ providerId: providerIdObj }).exec();
   }
 
   async getDiscountedProducts(
@@ -128,10 +130,10 @@ export class ProductService {
         discount: { $lte: discount },
       };
       if (categoryId) {
-        filters.mainCategory = categoryId;
+        filters.mainCategory = new Types.ObjectId(categoryId);
       }
       if (subCategoryId) {
-        filters.subCategory = subCategoryId;
+        filters.subCategory = new Types.ObjectId(subCategoryId);
       }
 
       const products = await this.productModel.find(filters).exec();

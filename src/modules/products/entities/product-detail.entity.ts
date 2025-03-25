@@ -10,16 +10,16 @@ export type ProductDetailDocument = ProductDetail & Document;
 @Schema()
 @ObjectType()
 export class ProductDetail {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: string;
 
   @Field(() => Provider, { nullable: true })
   provider: Provider;
 
-  @Field()
+  @Field({ nullable: true })
   title: string;
 
-  @Field()
+  @Field({ nullable: true })
   image: string;
 
   @Field({ nullable: true })

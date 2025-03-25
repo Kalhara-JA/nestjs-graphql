@@ -2,7 +2,7 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { User } from '../../users/entities/user.entity';
 import { Provider } from '../../providers/entities/provider.entity';
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ReviewDetailsDocument = ReviewDetails & Document;
 @Schema()
@@ -17,8 +17,9 @@ export class ReviewDetails {
   @Field({ nullable: true })
   comment?: string;
 
+  @Prop({ type: Date })
   @Field()
-  date: string;
+  date: Date;
 
   @Field(() => User)
   user: User;

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 export type LegalDataDocument = LegalData & Document;
@@ -10,15 +10,18 @@ export class LegalData {
   @Field(() => ID)
   id: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   @Field(() => ID)
   userId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, enum: ['natural'] })
   @Field()
   personType: string;
 
-  @Prop({ required: true })
+  @Prop({
+    required: true,
+    enum: ['Cedula de Ciudadanía', 'Pasaporte', 'Cedula de Extranjería'],
+  })
   @Field()
   documentType: string;
 
